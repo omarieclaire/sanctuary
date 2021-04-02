@@ -337,6 +337,8 @@ function windowOnLoad() {
    
     //
 
+    boxGroup = new THREE.Group();
+
     const torusKnotGeometry = new THREE.TorusKnotGeometry(2.7, 1.1, 300, 20, 2, 3);
     const sphereGeometry = new THREE.SphereGeometry(2, 30, 20, 30);
     const centerObjMaterial = new THREE.MeshLambertMaterial({ color: 7603694, opacity: 0.5, transparent: true, emissive: 3})
@@ -349,13 +351,16 @@ function windowOnLoad() {
 
     centerObj = new THREE.Mesh(torusKnotGeometry, centerObjMaterial);
     centerObj.scale.set(.75, .75, .75);
+
     centerWorldContainer.add(centerObj);
     centerObjects.push(centerObj);
+
 
     let centerObjBaby = new THREE.Mesh(sphereGeometry, centerObjBabyMaterial);
     centerObjBaby.scale.set(3.5,3.5, 3.5);
     centerObj.add(centerObjBaby);
     centerObjects.push(centerObjBaby);
+
 
 
 
@@ -507,7 +512,8 @@ function windowOnLoad() {
     //end controls
 
     // const geometry = new THREE.TorusKnotGeometry(10, 6, 100, 14, 4, 2);
-    boxGroup = new THREE.Group();
+ 
+
 
     function setupObject(obj, id, group, speeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, objScale) {
       // console.log(`setup id ${id}`);
@@ -650,6 +656,7 @@ function windowOnLoad() {
     }
 
     scene.add(boxGroup);
+
 
     raycaster = new THREE.Raycaster();
     document.addEventListener('mousemove', onDocumentMouseMove);
@@ -866,11 +873,13 @@ function windowOnLoad() {
 
     camera.updateMatrixWorld();
 
-    //mouse stuff
+    //HOVER stuff
     // find intersections
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(boxGroup.children, true);
+    const clickableThings = boxGroup.children.concat(centerObjects);
+    const intersects = raycaster.intersectObjects(clickableThings, true);
     if (intersects.length > 0) {
+      console.log("gotcha");
       if (INTERSECTED != intersects[0].object) {
         if (INTERSECTED) {
           INTERSECTED.traverse((o) => {
