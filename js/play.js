@@ -344,25 +344,19 @@ function windowOnLoad() {
     const centerObjMaterial = new THREE.MeshLambertMaterial({ color: 7603694, opacity: 0.5, transparent: true, emissive: 3})
     const centerObjBabyMaterial = new THREE.MeshLambertMaterial({ color: 8215273, opacity: .3, transparent: true, emissive: 6})
 
-
     const centerWorldContainer = new THREE.Object3D();
     scene.add(centerWorldContainer);
     centerObjects.push(centerWorldContainer);
 
     centerObj = new THREE.Mesh(torusKnotGeometry, centerObjMaterial);
     centerObj.scale.set(.75, .75, .75);
-
     centerWorldContainer.add(centerObj);
     centerObjects.push(centerObj);
-
 
     let centerObjBaby = new THREE.Mesh(sphereGeometry, centerObjBabyMaterial);
     centerObjBaby.scale.set(3.5,3.5, 3.5);
     centerObj.add(centerObjBaby);
     centerObjects.push(centerObjBaby);
-
-
-
 
 
     function makeCenterObjInstance(geometry, color, x, y, z) {
@@ -375,10 +369,19 @@ function windowOnLoad() {
       return centerObjInstance;
     }
 
+    const triLength = 60;
+    const triHeight = Math.sqrt(3)/2*triLength;
+    const ax = - triLength/2;
+    const ay = -triHeight/3;
+    const bx = triLength/2;
+    const by = -triHeight/3;
+    const cx = 0;
+    const cy = 2/3*triHeight;
+
     const centerObjs = [
-      makeCenterObjInstance(torusKnotGeometry, 0x8844aa, -20, 0, 20),
-      makeCenterObjInstance(torusKnotGeometry, 0xaa8844, 20, 0, 20),
-      // makeCenterObjInstance(centerObjGeom, 0x8844aa, 0, 0, 0),
+      makeCenterObjInstance(torusKnotGeometry, 0x8844aa, ax, 0, ay),
+      makeCenterObjInstance(torusKnotGeometry, 0xaa8844, bx, 0, by),
+      makeCenterObjInstance(torusKnotGeometry, 0x8844aa, cx, 0, cy),
     ];
 
     // const friendWorld = new THREE.Object3D();
