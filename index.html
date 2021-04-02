@@ -1,0 +1,149 @@
+<!-- softsanctuary.club -->
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="styles.css" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&display=swap" rel="stylesheet">
+  <title>Softie</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/fav/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/fav/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/fav/favicon-16x16.png">
+  <link rel="manifest" href="/fav/site.webmanifest">
+  <link rel="mask-icon" href="/fav/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="/fav/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="/fav/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+<body class="preload">
+
+  <!-- <video autoplay muted loop playsinline id="video"> -->
+  <!-- <source src="img/v1.mp4" type="video/mp4"> -->
+  <!-- </video> -->
+
+  <!-- <div id="wrapperToggleDiv">
+    <div class="btn noselect wrapperBtn wrapperBtnClosed" id="wrapperBtn">
+      <p>``</p>
+    </div>
+  </div>
+
+  <div class="wrapper" id="wrapper">
+    <div class="btn noselect" id="btn1">
+      <p>v≠v</p>
+    </div>
+    <div class="btn noselect " id="btn2">
+      <p>løl</p>
+    </div>
+    <div class="btn noselect" id="btn3">
+      <p>u§u</p>
+    </div>
+  </div> -->
+
+  <div id="wrapperToggleDiv" class="settingsMenu">
+    <div id="settingsBtn" class="btn noselect wrapperBtn wrapperBtnClosed">``</div>
+    <div class="slide-in from-left">
+      <!-- <div class="slide-in-content"> -->
+
+      <ul id="settingsDropdown" class="slide-in-content">
+
+        <li class="tempi">
+          <form id='changeNameForm' onSubmit={this.onSubmit}>
+            <div id='changeNameSlider' class='collapsed'>
+              <input type='button' id='toggleChangeNameInput' value='Change name?'>
+              <input type='text' id='changeNameInput' tabindex='-1' placeholder='new name' size=12>
+              <input type='submit' id='okButton' tabindex='-1' value='ok'>
+            </div>
+          </form>
+        <li class="tempi">
+          <label class="toggleLabel">
+            <span class="toggleLabel">Sound</span>
+            <input class="toggleSoundCheckbox" name="toggleSoundCheckbox" type="checkbox" checked>
+            <div class="toggleSoundDiv"></div>
+          </label>
+        </li>
+        <li class="tempi">
+          <a target="blank" href="/credits.html">Made by Marie Claire LeBlanc Flanagan & friends</a>
+        </li>
+      </ul>
+      <!-- </div> -->
+    </div>
+
+  </div>
+
+
+  <div id="container"></div>
+  <!-- <canvas id="canvas"></canvas> -->
+  <div id="loadingScreenDiv" class="loadingScreenDiv">
+    <p class="welcomeMsg" id="sanctuary">sanctuary</p>
+    <p class="welcomeMsg" id="motto">a soft space for gentle connection</p>
+    <!-- <p id="welcomeMsg"><span id="sanctuary">sanctuary</span><br><span id="motto">a soft space for gentle connection</span></p> -->
+    <form id="usernameForm">
+      <input name="name" autocomplete="off" id="username" type="text" placeholder="your name or username" required
+        autofocus>
+      <input type="submit" value="begin" id="submitUsername" onsubmit="return false">
+    </form>
+  </div>
+
+  </div>
+
+  <script type="x-shader/x-vertex" id="vertexshader">
+
+    attribute float size;
+
+    varying vec3 vColor;
+
+    void main() {
+
+      vColor = color;
+
+      vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+      gl_PointSize = size * ( 300.0 / -mvPosition.z );
+
+      gl_Position = projectionMatrix * mvPosition;
+
+    }
+
+  </script>
+
+  <script type="x-shader/x-fragment" id="fragmentshader">
+
+    uniform sampler2D pointTexture;
+
+    varying vec3 vColor;
+
+    void main() {
+
+      gl_FragColor = vec4( vColor, 1.0 );
+
+      gl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );
+
+    }
+
+  </script>
+
+
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+
+  <script type="module" src="js/play.js"></script>
+
+
+</body>
+
+</html>
