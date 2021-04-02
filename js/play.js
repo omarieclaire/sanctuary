@@ -619,7 +619,7 @@ function windowOnLoad() {
       scene.add(object);
 
       const gltfLoader = new GLTFLoader();
-      gltfLoader.load('./img/friend2.glb', (gltf) => {
+      gltfLoader.load('./img/friend3.glb', (gltf) => {
         let friendShape = gltf.scene;
         setupObject(friendShape, i, boxGroup, boxSpeeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, 20);
       });
