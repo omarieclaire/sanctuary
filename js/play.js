@@ -60,6 +60,8 @@ const color = new THREE.Color();
 
 const friendSound = new Audio("audio/friend.mp3");
 const seaSound = new Audio("audio/sea.mp3");
+const backgroundSound = new Audio("audio/background.mp3");
+
 
 let database = firebase.database();
 let ref = database.ref();
@@ -664,6 +666,9 @@ function windowOnLoad() {
       seaSound.play();
       seaSound.volume = 0.08;
       seaSound.loop = true;
+      backgroundSound.play();
+      backgroundSound.volume = 0.08;
+      backgroundSound.loop = true;
       setTimeout(function () { loadingScreenDiv.style.display = "none"; }, 600);
     },
     false
