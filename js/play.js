@@ -40,6 +40,9 @@ let boxSpeeds = [];
 const radius = 100;
 let toggleOpen = false;
 let centerObjects = [];
+let h1;
+let h2;
+let h3;
 let numberOfFriends = 40;
 let soundMuted = false;
 let sparkUniforms, sparkGeometry;
@@ -341,8 +344,8 @@ function windowOnLoad() {
 
     const torusKnotGeometry = new THREE.TorusKnotGeometry(2.7, 1.1, 300, 20, 2, 3);
     const sphereGeometry = new THREE.SphereGeometry(2, 30, 20, 30);
-    const centerObjMaterial = new THREE.MeshLambertMaterial({ color: 7603694, opacity: 0.5, transparent: true, emissive: 3})
-    const centerObjBabyMaterial = new THREE.MeshLambertMaterial({ color: 8215273, opacity: .3, transparent: true, emissive: 6})
+    const centerObjMaterial = new THREE.MeshLambertMaterial({ color: 16737818, opacity: 0.5, transparent: true, emissive: 3})
+    const centerObjSphereMaterial = new THREE.MeshLambertMaterial({ color: 8215273, opacity: .2, transparent: true, emissive: 6})
 
     const centerWorldContainer = new THREE.Object3D();
     scene.add(centerWorldContainer);
@@ -353,21 +356,26 @@ function windowOnLoad() {
     centerWorldContainer.add(centerObj);
     centerObjects.push(centerObj);
 
-    let centerObjBaby = new THREE.Mesh(sphereGeometry, centerObjBabyMaterial);
-    centerObjBaby.scale.set(3.5,3.5, 3.5);
-    centerObj.add(centerObjBaby);
-    centerObjects.push(centerObjBaby);
+    let centerObjSphere = new THREE.Mesh(sphereGeometry, centerObjSphereMaterial);
+    centerObjSphere.scale.set(3.5,3.5, 3.5);
+    centerObj.add(centerObjSphere);
+    // centerObjects.push(centerObjSphere);
 
 
-    function makeCenterObjInstance(geometry, color, x, y, z) {
-      const centerObjInstance = new THREE.Mesh(torusKnotGeometry, centerObjMaterial);
-      centerObjInstance.position.x = x;
-      centerObjInstance.position.y = y;
-      centerObjInstance.position.z = z;
-      centerWorldContainer.add(centerObjInstance);
-      centerObjects.push(centerObjInstance);
-      return centerObjInstance;
-    }
+    function makeRotatorObjInstance(geometry, color, x, y, z) {
+      const rotatorMaterial = new THREE.MeshLambertMaterial({ color: color, opacity: 0.4, transparent: true, emissive: 1})
+      const rotatorObjInstance = new THREE.Mesh(torusKnotGeometry, rotatorMaterial);
+      rotatorObjInstance.position.x = x;
+      rotatorObjInstance.position.y = y;
+      rotatorObjInstance.position.z = z;
+      centerObjects.push(rotatorObjInstance);
+      centerWorldContainer.add(rotatorObjInstance); //rotate
+
+      let rotatorSphere = new THREE.Mesh(sphereGeometry, centerObjSphereMaterial);
+      rotatorSphere.scale.set(1.5,1.5, 1.5);
+      rotatorObjInstance.add(rotatorSphere);
+      return rotatorObjInstance;
+    } 
 
     const triLength = 60;
     const triHeight = Math.sqrt(3)/2*triLength;
@@ -378,11 +386,16 @@ function windowOnLoad() {
     const cx = 0;
     const cy = 2/3*triHeight;
 
-    const centerObjs = [
-      makeCenterObjInstance(torusKnotGeometry, 0x8844aa, ax, 0, ay),
-      makeCenterObjInstance(torusKnotGeometry, 0xaa8844, bx, 0, by),
-      makeCenterObjInstance(torusKnotGeometry, 0x8844aa, cx, 0, cy),
-    ];
+    h1 = makeRotatorObjInstance(torusKnotGeometry, 6823151, ax, 0, ay);
+    h2 = makeRotatorObjInstance(torusKnotGeometry, 1514735, bx, 0, by);
+    h3 = makeRotatorObjInstance(torusKnotGeometry, 1543450, cx, 0, cy);
+
+
+    // const centerObjs = [
+    //   makeCenterObjInstance(torusKnotGeometry, 0x8844aa, ax, 0, ay),
+    //   makeCenterObjInstance(torusKnotGeometry, 0xaa8844, bx, 0, by),
+    //   makeCenterObjInstance(torusKnotGeometry, 0x8844aa, cx, 0, cy),
+    // ];
 
     // const friendWorld = new THREE.Object3D();
     // scene.add(friendWorld);
@@ -879,8 +892,8 @@ function windowOnLoad() {
     //HOVER stuff
     // find intersections
     raycaster.setFromCamera(mouse, camera);
-    const clickableThings = boxGroup.children.concat(centerObjects);
-    const intersects = raycaster.intersectObjects(clickableThings, true);
+    const hoverableThings = boxGroup.children.concat(centerObjects);
+    const intersects = raycaster.intersectObjects(hoverableThings, true);
     if (intersects.length > 0) {
       console.log("gotcha");
       if (INTERSECTED != intersects[0].object) {
@@ -962,6 +975,21 @@ function windowOnLoad() {
       // spSource, spSpread, spLight, spSize, spQuant, numofsets
       makeSparkles(centerObj, 800, .2, 9, 50, 50);
 
+    }
+
+    let intersectsH1 = raycaster.intersectObjects([h1], true);
+    if (intersectsH1.length > 0) {
+      console.log("h1");
+    }
+    let intersectsH2 = raycaster.intersectObjects([h2], true);
+    if (intersectsH2.length > 0) {
+      // spSource, spSpread, spLight, spSize, spQuant, numofsets
+      console.log("h2");
+    }
+    let intersectsH3 = raycaster.intersectObjects([h3], true);
+    if (intersectsH3.length > 0) {
+      // spSource, spSpread, spLight, spSize, spQuant, numofsets
+      console.log("h3");
     }
 
     let intersectsFriend = raycaster.intersectObjects(boxGroup.children, true);
