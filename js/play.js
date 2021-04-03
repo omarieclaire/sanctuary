@@ -28,7 +28,7 @@ firebase.analytics();
 let container, stats;
 let camera, scene, raycaster, renderer;
 
-let pointerControls, controls, water, sun, centerObj;
+let controls, water, sun, centerObj;
 
 const sky = new Sky();
 let skyBright = 10;
@@ -507,98 +507,9 @@ function windowOnLoad() {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.keyPanSpeed = 50;
-
-
-
-    // https://threejs.org/docs/#examples/en/controls/OrbitControls.keys
-
     controls.update();
-
-    // ---- pointer controls stuff----- 
-    pointerControls = new PointerLockControls(camera, document.body);
-    scene.add(pointerControls.getObject());
-
-    const onKeyDown = function (event) {
-      var delta = 20;
-
-      switch (event.code) {
-
-        case 'ArrowUp':
-        case 'KeyW':
-          moveForward = true;
-          //camera.position.z = camera.position.z - delta;
-          //camera.updateProjectionMatrix();
-
-
-          break;
-
-        case 'ArrowLeft':
-        case 'KeyA':
-          moveLeft = true;
-          // camera.position.x = camera.position.x - delta;
-          // camera.updateProjectionMatrix();
-
-
-          break;
-
-        case 'ArrowDown':
-        case 'KeyS':
-          moveBackward = true;
-          // camera.position.z = camera.position.z + delta;
-          // camera.updateProjectionMatrix();
-
-
-          break;
-
-        case 'ArrowRight':
-        case 'KeyD':
-          moveRight = true;
-          // camera.position.x = camera.position.x + delta;
-          // camera.updateProjectionMatrix();
-
-
-          break;
-
-        case 'Space':
-          if (canJump === true) velocity.y += 350;
-          canJump = false;
-          break;
-
-      }
-
-    };
-
-    const onKeyUp = function (event) {
-
-      switch (event.code) {
-
-        case 'ArrowUp':
-        case 'KeyW':
-          moveForward = false;
-          break;
-
-        case 'ArrowLeft':
-        case 'KeyA':
-          moveLeft = false;
-          break;
-
-        case 'ArrowDown':
-        case 'KeyS':
-          moveBackward = false;
-          break;
-
-        case 'ArrowRight':
-        case 'KeyD':
-          moveRight = false;
-          break;
-      }
-    };
-
-    document.addEventListener('keydown', onKeyDown);
-    document.addEventListener('keyup', onKeyUp);
-
-    //end controls
-
+    // https://threejs.org/docs/#examples/en/controls/OrbitControls.keys
+  
     // const geometry = new THREE.TorusKnotGeometry(10, 6, 100, 14, 4, 2);
  
     function makeFriendModal(friendID, id) {
@@ -877,74 +788,6 @@ function windowOnLoad() {
     requestAnimationFrame(animate);
     render();
     controls.update();
-
-    //   camera.position.x = camera.position.x - delta;
-    //   controls.update();
-
-    //   // camera.updateProjectionMatrix();
-    //   // camera.updateMatrixWorld();
-
-
-    // }
-    // if(moveRight) {
-    //   // controls.enablePan = true;
-    //   // controls.enableRotate = false;
-    //   controls.screenSpacePanning = true;
-    //   camera.position.x = camera.position.x + delta;
-    //   controls.update();
-
-    //   // camera.updateProjectionMatrix();
-    //   // camera.updateMatrixWorld();
-
-
-    //}
-
-    // ---- pointer controls stuff----- 
-    // const time = performance.now();
-
-
-    // raycaster.ray.origin.copy(pointerControls.getObject().position);
-    // raycaster.ray.origin.y -= 10;
-
-    // const intersections = raycaster.intersectObjects(objects);
-
-    // const onObject = intersections.length > 0;
-
-    // const delta = (time - prevTime) / 1000;
-
-    // velocity.x -= velocity.x * 10.0 * delta;
-    // velocity.z -= velocity.z * 10.0 * delta;
-
-    // velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
-
-    // direction.z = Number(moveForward) - Number(moveBackward);
-    // direction.x = Number(moveRight) - Number(moveLeft);
-    // direction.normalize(); // this ensures consistent movements in all directions
-
-    // if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
-    // if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
-
-    // if (onObject === true) {
-
-    //   velocity.y = Math.max(0, velocity.y);
-    //   canJump = true;
-
-    // }
-
-    // pointerControls.moveRight(- velocity.x * delta);
-    // pointerControls.moveForward(- velocity.z * delta);
-
-    // pointerControls.getObject().position.y += (velocity.y * delta); // new behavior
-
-    // if (pointerControls.getObject().position.y < 10) {
-
-    //   velocity.y = 0;
-    //   pointerControls.getObject().position.y = 10;
-
-    //   canJump = true;
-
-    // }
-
   }
 
 
