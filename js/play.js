@@ -295,7 +295,7 @@ function windowOnLoad() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
-    camera.position.set(30, 30, 200);
+    camera.position.set(0, 0, 2100);
 
     //
     sun = new THREE.Vector3();
@@ -497,14 +497,14 @@ function windowOnLoad() {
     scene.add(pointerControls.getObject());
 
     const onKeyDown = function (event) {
-      var delta = 1;
+      var delta = 30;
 
       switch (event.code) {
 
         case 'ArrowUp':
         case 'KeyW':
           moveForward = true;
-          // camera.position.z = camera.position.z - delta;
+         camera.position.z = camera.position.z - delta;
           camera.updateProjectionMatrix();
 
 
@@ -513,7 +513,7 @@ function windowOnLoad() {
         case 'ArrowLeft':
         case 'KeyA':
           moveLeft = true;
-          // camera.position.x = camera.position.x - delta;
+          camera.position.x = camera.position.x - delta;
           camera.updateProjectionMatrix();
 
 
@@ -522,7 +522,7 @@ function windowOnLoad() {
         case 'ArrowDown':
         case 'KeyS':
           moveBackward = true;
-          // camera.position.z = camera.position.z + delta;
+          camera.position.z = camera.position.z + delta;
           camera.updateProjectionMatrix();
 
 
@@ -531,7 +531,7 @@ function windowOnLoad() {
         case 'ArrowRight':
         case 'KeyD':
           moveRight = true;
-          // camera.position.x = camera.position.x + delta;
+          camera.position.x = camera.position.x + delta;
           camera.updateProjectionMatrix();
 
 

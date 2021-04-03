@@ -839,7 +839,6 @@ input {
   margin-top: 5rem;
   min-width: 15rem;
   max-width: 20rem;
-
   z-index: 1;
   position: fixed;
   flex-direction: column;
@@ -893,7 +892,8 @@ input {
 .slide-in-content {
   padding: 5px 20px;
   background: #eee;
-  transition: transform 1s ease-out; /* our nice transition */
+  /* transition: <property> <duration> <timing-function> <delay>; */
+  transition: background-color 2s, transform 2s ease-out;
 }
 
 .slide-in.from-left .slide-in-content {
