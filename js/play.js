@@ -150,9 +150,9 @@ for (let i = 0; i < numberOfFriends * 10; i++) {
 
 function mkGoodPosition() {
   return {
-    x: Math.random() * 800 - 500,
+    x: Math.random() * 900 - 500,
     y: Math.random() * 150 - 5, // 100
-    z: Math.random() * 600 - 400 // -200
+    z: Math.random() * 900 - 600 // -200
   };
 }
 
@@ -802,13 +802,13 @@ function windowOnLoad() {
       let msg = snapshot.val();
 
       const friend = friendMap[j];
-      setTimeout(function() {
-        if(typeof(friend) !== 'undefined') {
-          modifyMesh(friend, (o) => {
-            o.material.opacity = 0.5;
-          });
-        }
-      }, 5000);
+      if (typeof (friend) !== 'undefined') {
+        modifyMesh(friend, (o) => {
+          o.material.opacity = 0.5;
+          // let noOfPosts = msgsRef.child(); https://stackoverflow.com/questions/53815822/most-efficient-way-to-count-children-with-firebase-database
+          // o.scale.multiplyScalar(2); findme 
+        });
+      }
 
 
       // get a reference to the orb
