@@ -295,7 +295,7 @@ function windowOnLoad() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
-    camera.position.set(0, 0, 2100);
+    camera.position.set(0, 0, 200);
 
     //
     sun = new THREE.Vector3();
