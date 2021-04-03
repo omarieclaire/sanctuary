@@ -169,6 +169,21 @@ function mkGoodRotation() {
 
 function windowOnLoad() {
   document.body.classList.remove("preload");
+  
+  const jellyFishGLTFPromise = new Promise((resolve, reject) => {
+    const gltfLoader2 = new GLTFLoader();
+    gltfLoader2.load('./img/oct.glb', (gltf) => {
+      resolve(gltf.scene);
+    });
+  });
+
+  const friendShapePromise = new Promise((resolve, reject) => {
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load('./img/friend3.glb', (gltf) => {
+      resolve(gltf.scene);
+    });
+  });
+
   init();
   animate();
 
@@ -497,7 +512,7 @@ function windowOnLoad() {
     scene.add(pointerControls.getObject());
 
     const onKeyDown = function (event) {
-      var delta = 30;
+      var delta = 20;
 
       switch (event.code) {
 
@@ -677,20 +692,23 @@ function windowOnLoad() {
 
       scene.add(sphereAtHeartOfFriend);
 
-      const gltfLoader = new GLTFLoader();
-      gltfLoader.load('./img/friend3.glb', (gltf) => {
-        let friendShape = gltf.scene;
+      friendShapePromise.then((friendShapeGLTF) => {
+        const friendShape = friendShapeGLTF.clone()
         friendMap[i] = friendShape;
         setupObject(friendShape, i, boxGroup, boxSpeeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, 20);
       });
 
-      setTimeout(function () {
-        const gltfLoader2 = new GLTFLoader();
-        gltfLoader2.load('./img/oct.glb', (gltf) => {
-          jellyfish[i] = gltf.scene;
-          // setupObject(jellyfish, i, boxGroup, boxSpeeds, 10, 10, 10, rotationX, rotationY, rotationZ, 30);
-        });
-      }, Math.random() * 5000 + 1000);
+      jellyFishGLTFPromise.then((jelly) => {
+        jellyfish[i] = jelly.clone();
+      });
+
+      // setTimeout(function () {
+      //   const gltfLoader2 = new GLTFLoader();
+      //   gltfLoader2.load('./img/oct.glb', (gltf) => {
+      //     jellyfish[i] = gltf.scene;
+      //     // setupObject(jellyfish, i, boxGroup, boxSpeeds, 10, 10, 10, rotationX, rotationY, rotationZ, 30);
+      //   });
+      // }, Math.random() * 5000 + 1000);
      
       friendOrbs[i] = sphereAtHeartOfFriend;
 
