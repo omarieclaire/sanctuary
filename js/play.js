@@ -52,6 +52,8 @@ let sparkUniforms, sparkGeometry;
 const sparkles = 1;
 const sparkleFriendMap = {};
 
+
+
 let moveForward = false;
 let moveBackward = false;
 let moveLeft = false;
@@ -76,6 +78,7 @@ let msgsRef = ref.child('msg');
 
 let username;
 let friendOrbs = {};
+let friendMap = {};
 let friendQuestions = {
   0: "What did you learn today?",
   1: "What does it mean?",
@@ -674,6 +677,7 @@ function windowOnLoad() {
       const gltfLoader = new GLTFLoader();
       gltfLoader.load('./img/friend3.glb', (gltf) => {
         let friendShape = gltf.scene;
+        friendMap[i] = friendShape;
         setupObject(friendShape, i, boxGroup, boxSpeeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, 20);
       });
 
@@ -734,6 +738,13 @@ function windowOnLoad() {
     }
   }
 
+  function modifyMesh(object, callback) {
+    object.traverse(function (o) {
+      if (o.isMesh) {
+        callback(o);
+      }
+    })
+  }
 
   function gotData(data) {
     // if we didn't use .val we'd get a bunch of other info
@@ -789,6 +800,16 @@ function windowOnLoad() {
     let newItems = false;
     msgsRef.child(`${j}/msgs`).limitToLast(1).on('child_added', function (snapshot, prevKey) {
       let msg = snapshot.val();
+
+      const friend = friendMap[j];
+      setTimeout(function() {
+        if(typeof(friend) !== 'undefined') {
+          modifyMesh(friend, (o) => {
+            o.material.opacity = 0.5;
+          });
+        }
+      }, 5000);
+
 
       // get a reference to the orb
       let orb = friendOrbs[j];
@@ -876,6 +897,8 @@ function windowOnLoad() {
 
   }
 
+
+
   function render() {
     // example of updating sky in render
     // sky.material.uniforms['turbidity'].value = 0;
@@ -928,21 +951,17 @@ function windowOnLoad() {
           });
         }
         INTERSECTED = intersects[0].object;
-        INTERSECTED.traverse((o) => {
-          if (o.isMesh) {
-            o.currentHex = o.material.emissive.getHex();
-            o.material.emissive.setHex(0xff0000);
-          }
+
+        modifyMesh(INTERSECTED, (o) => {
+          o.currentHex = o.material.emissive.getHex();
+          o.material.emissive.setHex(0xff0000);
         });
       }
     } else {
       if (INTERSECTED) {
-        INTERSECTED.traverse((o) => {
-          if (o.isMesh) {
-            o.material.emissive.setHex(o.currentHex);
-          }
+        modifyMesh(INTERSECTED, (o) => {
+          o.material.emissive.setHex(o.currentHex);
         });
-
       }
       INTERSECTED = null;
     }
@@ -1011,12 +1030,8 @@ function windowOnLoad() {
       jellies.forEach(function(jelly) {
         const parent = jelly.parent;
         parent.remove(jelly);
-        jelly.traverse(function(o) {
-          if(o.isMesh) {
-            // reset the opacity
-            // is this the right value? 
-            o.material.opacity = 0.5;
-          }
+        modifyMesh(jelly, (o) => {
+          o.material.opacity = 0.5;
         });
       });
     } else {
@@ -1081,15 +1096,16 @@ function windowOnLoad() {
       currFriendModalDiv.classList.add("openFriendModalDiv")
       modalOpen = true;
 
-      let msg = takeModalIDReturnMsg(currFriendID);
-      let currTextDiv = document.getElementById("textInputID" + currFriendID);
+      // let msg = takeModalIDReturnMsg(currFriendID);
+      // let currTextDiv = document.getElementById("textInputID" + currFriendID);
 
       for (let i = 0; i < intersectsFriend.length; i++) {
         let currObj = intersectsFriend[i].object;
-        currObj.traverse((o) => {
-          if (o.isMesh) {
+        currObj.parent.children.forEach((obj) => {
+          modifyMesh(obj, (o) => {
             o.material.emissive.setHex(3135135);
-          }
+            o.material.opacity = 0.2;
+          })
         });
       }
       let currentOrb = friendOrbs[currFriendID];
