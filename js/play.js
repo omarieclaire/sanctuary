@@ -43,9 +43,9 @@ let boxSpeeds = [];
 const radius = 100;
 let toggleOpen = false;
 let centerObjects = [];
-let h1;
-let h2;
-let h3;
+let rot1;
+let rot2;
+let rot3;
 let numberOfFriends = 40;
 let soundMuted = false;
 let sparkUniforms, sparkGeometry;
@@ -69,6 +69,9 @@ const color = new THREE.Color();
 const friendSound = new Audio("audio/friend.mp3");
 const seaSound = new Audio("audio/sea.mp3");
 const backgroundSound = new Audio("audio/background.mp3");
+const rot1Sound = new Audio("audio/rot1.mp3");
+const rot2Sound = new Audio("audio/rot2.mp3");
+const rot3Sound = new Audio("audio/rot3.mp3");
 
 var jellyfish = [];
 
@@ -433,9 +436,9 @@ function windowOnLoad() {
     const cx = 0;
     const cy = 2/3*triHeight;
 
-    h1 = makeRotatorObjInstance(torusKnotGeometry, 6823151, ax, 0, ay);
-    h2 = makeRotatorObjInstance(torusKnotGeometry, 1514735, bx, 0, by);
-    h3 = makeRotatorObjInstance(torusKnotGeometry, 1543450, cx, 0, cy);
+    rot1 = makeRotatorObjInstance(torusKnotGeometry, 6823151, ax, 0, ay);
+    rot2 = makeRotatorObjInstance(torusKnotGeometry, 1514735, bx, 0, by);
+    rot3 = makeRotatorObjInstance(torusKnotGeometry, 1543450, cx, 0, cy);
 
 
     // const centerObjs = [
@@ -1052,8 +1055,10 @@ function windowOnLoad() {
 
     }
 
-    let intersectsH1 = raycaster.intersectObjects([h1], true);
-    if (intersectsH1.length > 0) {
+    let intersectsRot1 = raycaster.intersectObjects([rot1], true);
+    if (intersectsRot1.length > 0) {
+      rot1Sound.play();
+      rot1Sound.volume = 0.08;
       jellyfish.forEach(function(jelly) {
         var setup = jelly.iHaveBeenSetup || false;
         if(setup == true) {
@@ -1072,13 +1077,17 @@ function windowOnLoad() {
       // init();
       console.log("h1");
     }
-    let intersectsH2 = raycaster.intersectObjects([h2], true);
-    if (intersectsH2.length > 0) {
+    let intersectsRot2 = raycaster.intersectObjects([rot2], true);
+    if (intersectsRot2.length > 0) {
+      rot2Sound.play();
+      rot2Sound.volume = 0.08;
       // spSource, spSpread, spLight, spSize, spQuant, numofsets
       console.log("h2");
     }
-    let intersectsH3 = raycaster.intersectObjects([h3], true);
-    if (intersectsH3.length > 0) {
+    let intersectsRot3 = raycaster.intersectObjects([rot3], true);
+    if (intersectsRot3.length > 0) {
+      rot3Sound.play();
+      rot3Sound.volume = 0.08;
       // spSource, spSpread, spLight, spSize, spQuant, numofsets
       console.log("h3");
     }
@@ -1247,12 +1256,15 @@ function windowOnLoad() {
       backgroundSound.volume = 0.08;
       seaSound.volume = 0.08;
       friendSound.volume = 0.04;
+      soundMuted = false;
+
 
     } else {
       console.log("Checkbox is not checked..");
       backgroundSound.volume = 0;
       seaSound.volume = 0;
       friendSound.volume = 0;
+      soundMuted = true;
     }
 
     // function muteSounds() {
