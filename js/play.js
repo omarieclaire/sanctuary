@@ -677,12 +677,14 @@ function windowOnLoad() {
         setupObject(friendShape, i, boxGroup, boxSpeeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, 20);
       });
 
-     const gltfLoader2 = new GLTFLoader();
-      gltfLoader2.load('./img/oct.glb', (gltf) => {
-        jellyfish[i] = gltf.scene;
-        // setupObject(jellyfish, i, boxGroup, boxSpeeds, 10, 10, 10, rotationX, rotationY, rotationZ, 30);
-      });
-
+      setTimeout(function () {
+        const gltfLoader2 = new GLTFLoader();
+        gltfLoader2.load('./img/oct.glb', (gltf) => {
+          jellyfish[i] = gltf.scene;
+          // setupObject(jellyfish, i, boxGroup, boxSpeeds, 10, 10, 10, rotationX, rotationY, rotationZ, 30);
+        });
+      }, Math.random() * 5000 + 1000);
+     
       friendOrbs[i] = sphereAtHeartOfFriend;
 
       setupObject(sphereAtHeartOfFriend, i, boxGroup, boxSpeeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, 1);
