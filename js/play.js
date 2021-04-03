@@ -502,6 +502,13 @@ function windowOnLoad() {
     controls.target.set(0, 10, 0);
     controls.minDistance = 10.0;
     controls.maxDistance = 800.0;
+    controls.listenToKeyEvents( window ); // optional
+    controls.screenSpacePanning = false;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.keyPanSpeed = 50;
+
+
 
     // https://threejs.org/docs/#examples/en/controls/OrbitControls.keys
 
@@ -519,8 +526,8 @@ function windowOnLoad() {
         case 'ArrowUp':
         case 'KeyW':
           moveForward = true;
-         camera.position.z = camera.position.z - delta;
-          camera.updateProjectionMatrix();
+          //camera.position.z = camera.position.z - delta;
+          //camera.updateProjectionMatrix();
 
 
           break;
@@ -528,8 +535,8 @@ function windowOnLoad() {
         case 'ArrowLeft':
         case 'KeyA':
           moveLeft = true;
-          camera.position.x = camera.position.x - delta;
-          camera.updateProjectionMatrix();
+          // camera.position.x = camera.position.x - delta;
+          // camera.updateProjectionMatrix();
 
 
           break;
@@ -537,8 +544,8 @@ function windowOnLoad() {
         case 'ArrowDown':
         case 'KeyS':
           moveBackward = true;
-          camera.position.z = camera.position.z + delta;
-          camera.updateProjectionMatrix();
+          // camera.position.z = camera.position.z + delta;
+          // camera.updateProjectionMatrix();
 
 
           break;
@@ -546,8 +553,8 @@ function windowOnLoad() {
         case 'ArrowRight':
         case 'KeyD':
           moveRight = true;
-          camera.position.x = camera.position.x + delta;
-          camera.updateProjectionMatrix();
+          // camera.position.x = camera.position.x + delta;
+          // camera.updateProjectionMatrix();
 
 
           break;
@@ -869,6 +876,28 @@ function windowOnLoad() {
   function animate() {
     requestAnimationFrame(animate);
     render();
+    controls.update();
+
+    //   camera.position.x = camera.position.x - delta;
+    //   controls.update();
+
+    //   // camera.updateProjectionMatrix();
+    //   // camera.updateMatrixWorld();
+
+
+    // }
+    // if(moveRight) {
+    //   // controls.enablePan = true;
+    //   // controls.enableRotate = false;
+    //   controls.screenSpacePanning = true;
+    //   camera.position.x = camera.position.x + delta;
+    //   controls.update();
+
+    //   // camera.updateProjectionMatrix();
+    //   // camera.updateMatrixWorld();
+
+
+    //}
 
     // ---- pointer controls stuff----- 
     // const time = performance.now();
