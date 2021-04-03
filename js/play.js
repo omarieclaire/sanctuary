@@ -29,6 +29,9 @@ let container, stats;
 let camera, scene, raycaster, renderer;
 
 let pointerControls, controls, water, sun, centerObj;
+
+const sky = new Sky();
+let skyBright = 10;
 let newText;
 let INTERSECTED;
 let theta = 0;
@@ -65,6 +68,7 @@ const friendSound = new Audio("audio/friend.mp3");
 const seaSound = new Audio("audio/sea.mp3");
 const backgroundSound = new Audio("audio/background.mp3");
 
+var jellyfish = [];
 
 let database = firebase.database();
 let ref = database.ref();
@@ -141,6 +145,22 @@ for (let i = 0; i < numberOfFriends * 10; i++) {
   initialFriendYPositions.push(Math.random());
 }
 
+function mkGoodPosition() {
+  return {
+    x: Math.random() * 800 - 500,
+    y: Math.random() * 150 - 5, // 100
+    z: Math.random() * 600 - 400 // -200
+  };
+}
+
+function mkGoodRotation() {
+  return {
+    x: Math.random() * 2 * Math.PI,
+    y: Math.random() * 2 * Math.PI,
+    z: Math.random() * 2 * Math.PI
+  };
+}
+
 function windowOnLoad() {
   document.body.classList.remove("preload");
   init();
@@ -206,6 +226,31 @@ function windowOnLoad() {
     if (numOfSets > 1) {
       setTimeout(removeSparks, 0);
     }
+  }
+
+  function setupObject(obj, id, group, speeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, objScale) {
+    // console.log(`setup id ${id}`);
+    obj.scale.multiplyScalar(objScale);
+    obj.traverse((o) => {
+      if (o.isMesh) {
+        o.friendID = id;
+        o.material = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff, opacity: 0.5, transparent: true, })
+      }
+    });
+
+    obj.friendID = id;
+
+    obj.position.x = positionX;
+    obj.position.y = positionY;
+    obj.position.z = positionZ;
+
+    obj.rotation.x = rotationX;
+    obj.rotation.y = rotationY;
+    obj.rotation.z = rotationZ;
+
+    group.add(obj);
+    speeds.push(Math.random());
+    // console.log('===');
   }
 
   function init() {
@@ -279,13 +324,12 @@ function windowOnLoad() {
 
     // Skybox
 
-    const sky = new Sky();
     sky.scale.setScalar(10000);
     scene.add(sky);
 
     const skyUniforms = sky.material.uniforms;
 
-    skyUniforms['turbidity'].value = 10; //modd
+    skyUniforms['turbidity'].value = skyBright; // 0 makes the sky go black
     skyUniforms['rayleigh'].value = 10; //modd
     skyUniforms['mieCoefficient'].value = 0.009;
     skyUniforms['mieDirectionalG'].value = 0.8; //modd
@@ -344,7 +388,7 @@ function windowOnLoad() {
 
     const torusKnotGeometry = new THREE.TorusKnotGeometry(2.7, 1.1, 300, 20, 2, 3);
     const sphereGeometry = new THREE.SphereGeometry(2, 30, 20, 30);
-    const centerObjMaterial = new THREE.MeshLambertMaterial({ color: 16737818, opacity: 0.5, transparent: true, emissive: 3})
+    const centerObjMaterial = new THREE.MeshLambertMaterial({ color: 16737818, opacity: 0.54, transparent: true, emissive: 3})
     const centerObjSphereMaterial = new THREE.MeshLambertMaterial({ color: 8215273, opacity: .2, transparent: true, emissive: 6})
 
     const centerWorldContainer = new THREE.Object3D();
@@ -529,33 +573,6 @@ function windowOnLoad() {
 
     // const geometry = new THREE.TorusKnotGeometry(10, 6, 100, 14, 4, 2);
  
-
-
-    function setupObject(obj, id, group, speeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, objScale) {
-      // console.log(`setup id ${id}`);
-      obj.scale.multiplyScalar(objScale);
-      obj.traverse((o) => {
-        if (o.isMesh) {
-          o.friendID = id;
-          o.material = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff, opacity: 0.5, transparent: true, })
-        }
-      });
-
-      obj.friendID = id;
-
-      obj.position.x = positionX;
-      obj.position.y = positionY;
-      obj.position.z = positionZ;
-
-      obj.rotation.x = rotationX;
-      obj.rotation.y = rotationY;
-      obj.rotation.z = rotationZ;
-
-      group.add(obj);
-      speeds.push(Math.random());
-      // console.log('===');
-    }
-
     function makeFriendModal(friendID, id) {
       let container = document.getElementById("container");
       let friendModalDiv = document.createElement("div");
@@ -637,13 +654,15 @@ function windowOnLoad() {
     // makefriendorbs
     for (let i = 0; i < numberOfFriends; i++) {
 
-      const positionX = Math.random() * 800 - 500;
-      const positionY = Math.random() * 150 - 5; // 100
-      const positionZ = Math.random() * 600 - 400; //-200
+      const goodPosition = mkGoodPosition();
+      const positionX = goodPosition.x;
+      const positionY = goodPosition.y; // 100
+      const positionZ = goodPosition.z; //-200
 
-      const rotationX = Math.random() * 2 * Math.PI;
-      const rotationY = Math.random() * 2 * Math.PI;
-      const rotationZ = Math.random() * 2 * Math.PI;
+      const goodRotation = mkGoodRotation();
+      const rotationX = goodRotation.x;
+      const rotationY = goodRotation.y;
+      const rotationZ = goodRotation.z;
 
       const brightMaterial = new THREE.MeshPhongMaterial({ emissive: 0xFFFF00 });
       let sphereAtHeartOfFriend = new THREE.Mesh(sphereGeometry, brightMaterial);
@@ -658,11 +677,11 @@ function windowOnLoad() {
         setupObject(friendShape, i, boxGroup, boxSpeeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, 20);
       });
 
-      // const gltfLoader2 = new GLTFLoader();
-      // gltfLoader2.load('./img/oct.glb', (gltf) => {
-      //   let oct = gltf.scene;
-      //   setupObject(oct, i, boxGroup, boxSpeeds, 10, 10, 10, rotationX, rotationY, rotationZ, 30);
-      // });
+     const gltfLoader2 = new GLTFLoader();
+      gltfLoader2.load('./img/oct.glb', (gltf) => {
+        jellyfish[i] = gltf.scene;
+        // setupObject(jellyfish, i, boxGroup, boxSpeeds, 10, 10, 10, rotationX, rotationY, rotationZ, 30);
+      });
 
       friendOrbs[i] = sphereAtHeartOfFriend;
 
@@ -677,7 +696,6 @@ function windowOnLoad() {
     raycaster = new THREE.Raycaster();
     document.addEventListener('mousemove', onDocumentMouseMove);
     window.addEventListener('resize', onWindowResize);
-
   }
 
   let loadingScreenDiv = document.getElementById("loadingScreenDiv");
@@ -857,6 +875,9 @@ function windowOnLoad() {
   }
 
   function render() {
+    // example of updating sky in render
+    // sky.material.uniforms['turbidity'].value = 0;
+
     const time = performance.now() * 0.0001;
 
     centerObj.position.y = Math.sin(time) * 20 + 5;
@@ -895,7 +916,7 @@ function windowOnLoad() {
     const hoverableThings = boxGroup.children.concat(centerObjects);
     const intersects = raycaster.intersectObjects(hoverableThings, true);
     if (intersects.length > 0) {
-      console.log("gotcha");
+      // console.log("gotcha");
       if (INTERSECTED != intersects[0].object) {
         if (INTERSECTED) {
           INTERSECTED.traverse((o) => {
@@ -965,6 +986,43 @@ function windowOnLoad() {
     }
   }
 
+  // fade the jellies by changing their opacity
+  function fadeJellyfishFromScene(jellies) {
+    var exit = false;
+    jellies.forEach(function (jelly) {
+      jelly.traverse(function (o) {
+        if (o.isMesh) {
+          const opacity = o.material.opacity;
+          if (opacity > 0.01) {
+            o.material.opacity = opacity - 0.01;
+          } else {
+            // we exit if any opacity is < 0.01
+            // but they should all have the same value
+            // so its not a big deal.
+            exit = true;
+          }
+        }
+      });
+    });
+
+    if(exit == true) {
+      jellies.forEach(function(jelly) {
+        const parent = jelly.parent;
+        parent.remove(jelly);
+        jelly.traverse(function(o) {
+          if(o.isMesh) {
+            // reset the opacity
+            // is this the right value? 
+            o.material.opacity = 0.5;
+          }
+        });
+      });
+    } else {
+      setTimeout(fadeJellyfishFromScene, 200, jellies);
+    }
+
+  }
+
   function clickOrTouchFriendOrbs(event) {
     raycaster.setFromCamera(mouse, camera);
 
@@ -979,6 +1037,22 @@ function windowOnLoad() {
 
     let intersectsH1 = raycaster.intersectObjects([h1], true);
     if (intersectsH1.length > 0) {
+      jellyfish.forEach(function(jelly) {
+        var setup = jelly.iHaveBeenSetup || false;
+        if(setup == true) {
+          boxGroup.add(jelly);
+        } else {
+          const rotation = mkGoodRotation();
+          const position = mkGoodPosition();  
+          setupObject(jelly, 100, boxGroup, boxSpeeds, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, 30);
+          jelly.iHaveBeenSetup = true;  
+        }
+      });
+
+      fadeJellyfishFromScene(jellyfish);
+
+      // skyBright = 0;
+      // init();
       console.log("h1");
     }
     let intersectsH2 = raycaster.intersectObjects([h2], true);
