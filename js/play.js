@@ -1253,14 +1253,14 @@ function windowOnLoad() {
 
   // language
 
-  var currentLanguage = 'en';
+  var currentLanguage = 'es';
   function updateVisibility(lang, visibility) {
     document.querySelectorAll(`[lang="${lang}"]`).forEach((element) => {
       element.style.display = visibility;
     });
   }
-  updateVisibility('en', '');
-  updateVisibility('es', 'none');
+  updateVisibility('en', 'none');
+  updateVisibility('es', '');
 
   function handleLanguageUpdate(event) {
     event.preventDefault();
