@@ -85,10 +85,9 @@ body {
   line-height: 2.6rem;
 }
 
-#languageP {
+#languageP, #languagePS {
 margin-top: 10rem;
 text-decoration: none;
-
 }
 
 #language {
@@ -132,7 +131,7 @@ text-decoration: none;
   /* color: rgb(213, 20, 243); */
 }
 
-#motto{
+#motto, #mottoS{
   font-style: italic;
   font-size: 1.3rem;
 }
@@ -291,7 +290,7 @@ text-decoration: none;
 
 }
 
-#changeNameInput::-webkit-input-placeholder {
+#changeNameInput::-webkit-input-placeholder, #changeNameInputS::-webkit-input-placeholder {
 color: rgb(254, 228, 237);
 }
 
@@ -556,7 +555,7 @@ input {
   /* width: 2rem; */
 }
 
-#changeNameInput{
+#changeNameInput, #changeNameInputS{
   background-color: rgba(178, 124, 211, 0.85);
   /* border: .5px solid white; */
   flex: auto;
@@ -667,7 +666,7 @@ input {
     margin-top: 5rem;
   }
 
-  #motto{
+  #motto, #mottoS{
     font-style: italic;
     font-size: 1.8rem;
   }
@@ -924,7 +923,7 @@ input {
   transform: translateX(-50%);
 }
 
-#toggleChangeNameInput {
+#toggleChangeNameInput, #toggleChangeNameInputS {
   flex: 0 0 50%;
   padding:7px;
   color: rgba(76, 61, 134, .8);
@@ -934,7 +933,7 @@ input {
 }
 
 
-#okButton {
+#okButton, #okButtonS {
   flex: none;
   flex-basis: 10%;
   background-color: rgba(167, 95, 211, 0.85);

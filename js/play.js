@@ -86,69 +86,94 @@ let msgsRef = ref.child('msg');
 let username;
 let friendOrbs = {};
 let friendMap = {};
-let friendQuestions = {
-  0: "What did you learn today?",
-  1: "What does it mean?",
-  2: "Where does the time go?",
-  3: "Where are you from?",
-  4: "Who inspires you?",
-  5: "How do you learn?",
-  6: "Who do you love?",
-  7: "When did you last rest?",
-  8: "Do you wish you had more?",
-  9: "Can you imagine a better way?",
-  10: "What is a strange thing you know?",
-  11: "What is at the bottom?",
-  12: "Have you ever failed?",
-  13: "What is the perfect day?",
-  14: "Who do you wish you could speak to?",
-  15: "What are you grateful for?",
-  16: "If you had a secret hour every day how would you spend it?",
-  17: "What is your earliest memory of play?",
-  18: "What does friendship mean to you?",
-  19: "What song will you listen to right now?",
-  20: "How does your body feel?",
-  21: "What are you curious about?",
-  22: "Why do you get up in the morning?",
-  23: "What book changed your life?",
-  24: "Where do you wish you could go?",
-  25: "Would you choose peace, love, or joy?",
-  26: "What meal would you like to eat?",
-  27: "What is something you shared with someone?",
-  28: "Tell us about a dream?",
-  29: "Tell us a fact?",
-  30: "Tell us a story in 10 words?",
-  31: "What are you looking forward to?",
-  32: "Describe a peaceful place?",
-  33: "Describe a perfect day?",
-  34: "Describe a good question",
-  35: "Describe a good friend",
-  36: "Describe a peaceful evening",
-  37: "Where is home?",
-  38: "Where have you been?",
-  39: "Where have you never been?",
-  40: "Where is the good life?",
-  41: "Why are you happy?",
-  42: "What gift would you like to give?",
-  43: "How have you changed someone's life?",
-  44: "What is a beloved tree?",
-  45: "What is a beloved animal?",
-  46: "When did you last stretch?",
-  47: "What can you hear right now?",
-  48: "When you turn around, what do you see?",
-  49: "Where could you walk today?",
-  50: "Describe a beloved soft thing",
-  51: "Describe a beloved smell?",
-  52: "Where do you wish you were?",
-  53: "When did you last dance?",
-  54: "What do your hands want to do?",
-  55: "What does your face want to do?",
-  56: "How do you feel?",
-  57: "What are you thinking about?",
-  58: "What soft surface can you touch right now",
-  59: "What are you hoping for?",
-  60: "What is behind you?"
+let friendQuestionsS = {
+  0: "¿Cuál sería un placer sencillo para ti?",
+  1: "¿Qué significa eso?",
+  2: "¿Quién te inspira?",
+  3: "¿Cómo aprendes?",
+  4: "¿Desarías tener más?", 
+  5: "¿Puedes imaginar una mejor alternativa?",
+  6: "¿Qué cosa sorprendente has aprendido?",
+  7: "¿Qué hay al final?", 
+  8: "Describe una mañana hermosa",
+  9: "¿Con quién te gustaría poder hablar?",
+  10: "Describe algo suave que ames",
+  11: "Si los días tuvieran una hora extra ¿cómo la aprovecharías?",
+  12: "¿Cuál es tu recuerdo más temprano de juego?",
+  13: "¿Cómo sabes cuando alguien es un/a verdadero/a amigo/a?",
+  14: "¿Qué canción quisieras compartir por aquí?",
+  15: "¿Cómo huele tu lugar favorito?",
+  16: "¿Qué quieren hacer tus manos?",
+  17: "¿Qué texturas te gusta tocar?",
+  18: "¿Qué cosa buena podrías hacer por vos ahora mismo?",
+  19: "¿Qué se ve por tu ventana?",
+  20: "¿Qué quiere hacer tu cuerpo ahora?",
+  21: "¿Qué te genera curiosidad?",
+  22: "¿Qué te hace reír incontrolablemente?",
+  23: "¿Qué libro darías como regalo?",
+  24: "Describe algo que adores",
+  25: "¿Elegirías paz, amor o alegría?",
+  26: "¿Qué comida te gustaría comer ahora mismo?",
+  27: "¿Qué es algo que hayas compartido con alguien?",
+  28: "Describe un sueño memorable",
+  29: "¿Un lugar que recuerdes con cariño?",
+  30: "Cuenta una historia en 10 palabras",
+  31: "¿Qué es lo que estás buscando?",
+  32: "Describe un lugar imaginario pacífico",
+  33: "¿Cuándo te das vuelta, qué ves?",
+  34: "¿Qué hace que una pregunta sea buena?",
+  35: "¿Qué sonidos escuchas en este momento?",
+  36: "¿Qué te hace sentir conectado/a?",
+  37: "¿Qué es el hogar?",
+  38: "¿Qué regalo te gustaría dar?",
+  39: "Describe un animal que ames",
+  40: "Describe una planta que ames"
 };
+
+let friendQuestions = {
+  0: "What is a simple pleasure for you?",
+  1: "What does it mean?",
+  2: "Who inspires you?",
+  3: "How do you learn?",
+  4: "Do you wish you had more?",
+  5: "Can you imagine a better way?",
+  6: "What is a surprising thing you’ve learned?",
+  7: "What is at the bottom?",
+  8: "Describe a beautiful morning?",
+  9: "Who do you wish you could speak to?",
+  10: "Describe a beloved soft thing?",
+  11: "If you had an extra hour every day how would you spend it?",
+  12: "What is your earliest memory of play?",
+  13: "How do you know when someone is a true friend?",
+  14: "What song would you like to share here?",
+  15: "What does your favourite place smell like?",
+  16: "What do your hands want to do?",
+  17: "What texture do you like to touch?",
+  18: "What kind thing could you do for yourself right now?",
+  19: "What is outside your window?",
+  20: "What does your body want to do?",
+  21: "What are you curious about?",
+  22: "What makes you laugh uncontrollably?",
+  23: "What book would you give as a gift?",
+  24: "Describe a beloved soft thing",
+  25: "Would you choose peace, love, or joy?",
+  26: "What meal would you like to eat right now?",
+  27: "What is something you shared with someone?",
+  28: "Describe a memorable dream?",
+  29: "What is a place you remember fondly?",
+  30: "Tell a story in 10 words?",
+  31: "What are you looking forward to?",
+  32: "Describe an imaginary peaceful place?",
+  33: "When you turn around, what do you see?",
+  34: "What makes a question good?",
+  35: "What quiet under-noises do your ears hear right now?",
+  36: "What makes you feel connected?",
+  37: "What is home?",
+  38: "What gift would you like to give?",
+  39: "Describe a beloved animal?",
+  40: "Describe a plant that you love?"
+};
+
 
 const initialFriendYPositions = [];
 for (let i = 0; i < numberOfFriends * 10; i++) {
@@ -322,6 +347,7 @@ function windowOnLoad() {
     let savedUserName = nameDisplayCheck();
     if (savedUserName) {
       document.getElementById("username").value = savedUserName;
+      document.getElementById("usernameS").value = savedUserName;
     }
 
     container = document.getElementById('container');
@@ -549,8 +575,11 @@ function windowOnLoad() {
       let printFriendNumberDiv = document.createElement("div");
       let friendNumber = document.createTextNode("#" + friendID);    // Create a text node
       let infoTextDiv = document.createElement("div");
+      let infoTextDivS = document.createElement("div");
+
       let hr = document.createElement("hr");
       let newInfoText = document.createTextNode(`${friendQuestions[id]}`);    // Create a text node
+      let newInfoTextS = document.createTextNode(`${friendQuestionsS[id]}`);    // Create a text node
       let printTextDiv = document.createElement("div");
       let printText = document.createTextNode(" ");    // Create a text node
       let formDiv = document.createElement("div");
@@ -568,6 +597,12 @@ function windowOnLoad() {
       printFriendNumberDiv.classList.add("printFriendNumberDiv");
       hr.classList.add("hr");
       infoTextDiv.classList.add("infoTextDiv");
+      infoTextDivS.classList.add("infoTextDiv");
+
+      infoTextDivS.lang = "es";
+      infoTextDiv.lang = "en";
+
+
       friendModalDiv.classList.add("friendModalDiv");
       printTextDiv.classList.add("printTextDiv");
       formDiv.classList.add("formDiv");
@@ -584,7 +619,8 @@ function windowOnLoad() {
       printTextDiv.appendChild(printText);
       infoTextDiv.appendChild(newInfoText);
       infoTextDiv.appendChild(hr);
-
+      infoTextDivS.appendChild(newInfoTextS);
+      infoTextDivS.appendChild(hr);
       formDiv.appendChild(form);
       form.appendChild(textInput);
       form.appendChild(submitInput);
@@ -594,6 +630,7 @@ function windowOnLoad() {
       container.insertBefore(friendModalDiv, container.childNodes[0]);
       friendModalDiv.insertBefore(printTextDiv, friendModalDiv.childNodes[0]);
       friendModalDiv.insertBefore(infoTextDiv, friendModalDiv.childNodes[0]);
+      friendModalDiv.insertBefore(infoTextDivS, friendModalDiv.childNodes[0]);
       friendModalDiv.insertBefore(printFriendNumberDiv, friendModalDiv.childNodes[0]);
       friendModalDiv.insertBefore(closeModalBtnDiv, friendModalDiv.childNodes[0]);
 
@@ -709,12 +746,36 @@ function windowOnLoad() {
 
   let loadingScreenDiv = document.getElementById("loadingScreenDiv");
   let submitUsername = document.getElementById("submitUsername");
-
   submitUsername.addEventListener(
     "click",
     function (event) {
       event.preventDefault();
       let currUsername = document.getElementById("username").value;
+      if (currUsername != "") {
+        let usernameForm = document.getElementById("usernameForm");
+      } else {
+        return
+      }
+      localStorage.setItem('name', currUsername);
+      username = nameDisplayCheck();
+      loadingScreenDiv.classList.add("fade");
+      seaSound.play();
+      seaSound.volume = 0.08;
+      seaSound.loop = true;
+      backgroundSound.play();
+      backgroundSound.volume = 0.08;
+      backgroundSound.loop = true;
+      setTimeout(function () { loadingScreenDiv.style.display = "none"; }, 600);
+    },
+    false
+  );
+
+  let submitUsernameS = document.getElementById("submitUsernameS");
+  submitUsernameS.addEventListener(
+    "click",
+    function (event) {
+      event.preventDefault();
+      let currUsername = document.getElementById("usernameS").value;
       if (currUsername != "") {
         let usernameForm = document.getElementById("usernameForm");
       } else {
@@ -1104,10 +1165,13 @@ function windowOnLoad() {
 
   let settingsDropdown = document.getElementById("settingsDropdown");
   let toggleChangeNameInput = document.getElementById("toggleChangeNameInput");
+  let toggleChangeNameInputS = document.getElementById("toggleChangeNameInputS");
   let settingsBtn = document.getElementById("settingsBtn");
   let changeNameInput = document.getElementById("changeNameInput");
   let changeNameSlider = document.getElementById("changeNameSlider");
   let changeNameForm = document.getElementById("changeNameForm");
+  let changeNameFormS = document.getElementById("changeNameFormS");
+
   // let toggleSoundCheckbox = document.getElementById("toggleSoundCheckbox");
 
   function settingsMenuOpen(event) {
@@ -1117,6 +1181,7 @@ function windowOnLoad() {
     closeAllModals(event);
     // console.log("closeem");
     toggleChangeNameInput.value = `Change name, ${username}?`;
+    toggleChangeNameInputS.value = `¿Quieres cambiar tu nombre, ${username}?`;
   }
 
   settingsBtn.addEventListener("click", settingsMenuOpen);
@@ -1134,6 +1199,8 @@ function windowOnLoad() {
   }
 
   toggleChangeNameInput.onclick = expand;
+  toggleChangeNameInputS.onclick = expand;
+
 
   changeNameInput.onblur = function () {
     setTimeout(collapse, 100);
@@ -1144,7 +1211,10 @@ function windowOnLoad() {
     console.log(changeNameInput.value);
     localStorage.setItem('name', changeNameInput.value);
     username = nameDisplayCheck();
+
     document.getElementById("toggleChangeNameInput").value = `Change name, ${username}?`;
+    document.getElementById("toggleChangeNameInputS").value = `¿Quieres cambiar tu nombre, ${username}?`;
+
     collapse();
   }
 
@@ -1180,6 +1250,39 @@ function windowOnLoad() {
   });
 
   document.body.onload = nameDisplayCheck;
+
+  // language
+
+  var currentLanguage = 'en';
+  function updateVisibility(lang, visibility) {
+    document.querySelectorAll(`[lang="${lang}"]`).forEach((element) => {
+      element.style.display = visibility;
+    });
+  }
+  updateVisibility('en', '');
+  updateVisibility('es', 'none');
+
+  function handleLanguageUpdate(event) {
+    event.preventDefault();
+    if(currentLanguage == 'en') {
+      updateVisibility('en', 'none');
+      updateVisibility('es', '');
+      currentLanguage = 'es';
+    } else {
+      updateVisibility('en', '');
+      updateVisibility('es', 'none');
+      currentLanguage = 'en';
+    }
+  }
+
+  let toggleLanguage = document.getElementById("languageP");
+  let toggleLanguageS = document.getElementById("languagePS");
+
+  toggleLanguage.addEventListener('click', handleLanguageUpdate)
+  toggleLanguageS.addEventListener('click', handleLanguageUpdate)
+
+  // toggleSoundCheckbox.addEventListener('change', handleLanguageUpdate);
+
 }
 
 window.addEventListener("load", windowOnLoad);

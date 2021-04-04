@@ -1,6 +1,6 @@
 <!-- softsanctuary.club -->
 <!DOCTYPE html>
-<html lang="">
+<html>
 
 <head>
   <meta charset="utf-8">
@@ -57,20 +57,27 @@
         <li class="tempi">
           <form id='changeNameForm' onSubmit={this.onSubmit}>
             <div id='changeNameSlider' class='collapsed'>
-              <input type='button' id='toggleChangeNameInput' value='Change name?'>
-              <input type='text' id='changeNameInput' tabindex='-1' placeholder='new name' size=12>
-              <input type='submit' id='okButton' tabindex='-1' value='ok'>
+              <input type='button' id='toggleChangeNameInput' value='Change name?' lang="en">
+              <input type='button' id='toggleChangeNameInputS' value='¿Quieres cambiar tu nombre?' lang="es">
+
+              <input type='text' id='changeNameInput' tabindex='-1' placeholder='New name' size=12 lang="en">
+              <input type='text' id='changeNameInputS' tabindex='-1' placeholder='Nuevo nombre' size=12 lang="es">
+
+              <input type='submit' id='okButton' tabindex='-1' value='ok' lang="en">
+              <input type='submit' id='okButtonS' tabindex='-1' value='ok' lang="es">
             </div>
           </form>
         <li class="tempi">
           <label class="toggleLabel">
-            <span class="toggleLabel">Sound</span>
+            <span class="toggleLabel" lang="en"></span>Sound</span>
+            <!-- <span class="toggleLabel" lang="es"></span>Sonido</span> -->
             <input class="toggleSoundCheckbox" name="toggleSoundCheckbox" type="checkbox" checked>
             <div class="toggleSoundDiv"></div>
           </label>
         </li>
         <li class="tempi">
-          <a target="blank" href="/credits.html">Made by Marie Claire LeBlanc Flanagan & friends</a>
+          <a target="blank" href="/credits.html" lang="en">Made by Marie Claire LeBlanc Flanagan & friends</a>
+          <a target="blank" href="/credits.html" lang="es">Desarrollado por Marie Claire LeBlanc Flanagan & friends</a>
         </li>
       </ul>
       <!-- </div> -->
@@ -83,16 +90,20 @@
   <!-- <canvas id="canvas"></canvas> -->
   <div id="loadingScreenDiv" class="loadingScreenDiv">
     <p class="welcomeMsg" id="sanctuary">sanctuary</p>
-    <p class="welcomeMsg" id="motto">a soft space for gentle connection</p>
+    <p class="welcomeMsg" id="motto" lang="en">a soft space for gentle connection</p>
+    <p class="welcomeMsg" id="mottoS" lang="es">Un espacio tranquilo de conexión</p>
+
     <!-- <p id="welcomeMsg"><span id="sanctuary">sanctuary</span><br><span id="motto">a soft space for gentle connection</span></p> -->
     <form id="usernameForm">
-      <input name="name" autocomplete="off" id="username" type="text" placeholder="your name or username" required
-        autofocus>
-      <input type="submit" value="begin" id="submitUsername" onsubmit="return false">
+      <input name="name" lang="en" autocomplete="off" id="username" type="text" placeholder="your name or username"
+        required autofocus>
+      <input name="name" lang="es" autocomplete="off" id="usernameS" type="text"
+        placeholder="Tu nombre o nombre de usuario" required autofocus>
+      <input type="submit" lang="en" value="begin" id="submitUsername" onsubmit="return false">
+    <input type="submit" lang="es" value="Comenzar" id="submitUsernameS" onsubmit="return false">
     </form>
-    <p class="welcomeMsg" id="languageP"><a target="_blank" id="language" href="LINK">español</a></p>
-
-  </div>
+    <p class="welcomeMsg" id="languageP" lang="es"><a id="language" href="">english</a></p>
+    <p class="welcomeMsg" id="languagePS" lang="en"><a id="language" href="">español</a></p>
   </div>
 
   <script type="x-shader/x-vertex" id="vertexshader">
