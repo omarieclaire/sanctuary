@@ -188,9 +188,11 @@ function windowOnLoad() {
     });
   });
 
-  const boxGeometry = new THREE.BoxGeometry(13, 13, 13, 10, 10, 10);
+  const boxGeometry = new THREE.TorusKnotGeometry(.8, .1, 300, 7, 5, 7);
+  // const boxGeometry = new THREE.BoxGeometry(3, 3, 3, 10, 10, 10);
+
   function makeFlyingBoxes(x, y, z) {
-    let boxGeometryInstance = new THREE.Mesh(boxGeometry, buildTwistMaterial(0.0));
+    let boxGeometryInstance = new THREE.Mesh(boxGeometry, buildTwistMaterial(0.5));
     boxGeometryInstance.position.x = x;
     boxGeometryInstance.position.y = y;
     boxGeometryInstance.position.z = z;
