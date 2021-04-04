@@ -188,9 +188,9 @@ function windowOnLoad() {
     });
   });
 
-  const boxGeometry = new THREE.BoxGeometry(2, 30, 20, 30);
+  const boxGeometry = new THREE.BoxGeometry(13, 13, 13, 10, 10, 10);
   function makeFlyingBoxes(x, y, z) {
-    let boxGeometryInstance = new THREE.Mesh(boxGeometry, buildTwistMaterial(20.0));
+    let boxGeometryInstance = new THREE.Mesh(boxGeometry, buildTwistMaterial(0.0));
     boxGeometryInstance.position.x = x;
     boxGeometryInstance.position.y = y;
     boxGeometryInstance.position.z = z;
@@ -198,7 +198,7 @@ function windowOnLoad() {
     return boxGeometryInstance;
   }
 
-  const nsphereGeometry = new THREE.SphereGeometry(2, 30, 20, 30);
+  const nsphereGeometry = new THREE.TorusGeometry( 18, .8, 21, 100, 6.3 );
   function makeFlyingSpheres(x, y, z) {
     let sphereGeometryInstance = new THREE.Mesh(nsphereGeometry, buildTwistMaterial(0.2));
     sphereGeometryInstance.position.x = x;
@@ -1037,7 +1037,6 @@ function windowOnLoad() {
       makeRotatingCreatures(jellyfish);
       fadeFlyingThingsFromScene(jellyfish);
       // skyBright = 0;
-      console.log("h1");
     }
     let intersectsRot2 = raycaster.intersectObjects([rot2], true);
     if (intersectsRot2.length > 0) {
@@ -1045,8 +1044,6 @@ function windowOnLoad() {
       rot2Sound.volume = 0.08;
       makeRotatingCreatures(flyingBoxes);
       fadeFlyingThingsFromScene(flyingBoxes);
-
-      console.log("h2");
     }
     let intersectsRot3 = raycaster.intersectObjects([rot3], true);
     if (intersectsRot3.length > 0) {
@@ -1054,7 +1051,6 @@ function windowOnLoad() {
       rot3Sound.volume = 0.08;
       makeRotatingCreatures(flyingSpheres);
       fadeFlyingThingsFromScene(flyingSpheres);
-      console.log("h3");
     }
 
     let intersectsFriend = raycaster.intersectObjects(boxGroup.children, true);
