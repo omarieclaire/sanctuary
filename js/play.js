@@ -74,6 +74,10 @@ const rot2Sound = new Audio("audio/rot2.mp3");
 const rot3Sound = new Audio("audio/rot3.mp3");
 
 var jellyfish = [];
+var flyingBoxes = [];
+var flyingSpheres = [];
+
+
 
 let database = firebase.database();
 let ref = database.ref();
@@ -169,7 +173,7 @@ function mkGoodRotation() {
 
 function windowOnLoad() {
   document.body.classList.remove("preload");
-  
+
   const jellyFishGLTFPromise = new Promise((resolve, reject) => {
     const gltfLoader2 = new GLTFLoader();
     gltfLoader2.load('./img/oct.glb', (gltf) => {
@@ -183,6 +187,26 @@ function windowOnLoad() {
       resolve(gltf.scene);
     });
   });
+
+  const boxGeometry = new THREE.BoxGeometry(2, 30, 20, 30);
+  function makeFlyingBoxes(x, y, z) {
+    let boxGeometryInstance = new THREE.Mesh(boxGeometry, buildTwistMaterial(20.0));
+    boxGeometryInstance.position.x = x;
+    boxGeometryInstance.position.y = y;
+    boxGeometryInstance.position.z = z;
+    // centerWorldContainer.add(boxGeometryInstance); //rotate
+    return boxGeometryInstance;
+  }
+
+  const nsphereGeometry = new THREE.SphereGeometry(2, 30, 20, 30);
+  function makeFlyingSpheres(x, y, z) {
+    let sphereGeometryInstance = new THREE.Mesh(nsphereGeometry, buildTwistMaterial(0.2));
+    sphereGeometryInstance.position.x = x;
+    sphereGeometryInstance.position.y = y;
+    sphereGeometryInstance.position.z = z;
+    // centerWorldContainer.add(boxGeometryInstance); //rotate
+    return sphereGeometryInstance;
+  }
 
   init();
   animate();
@@ -402,33 +426,37 @@ function windowOnLoad() {
 
     scene.fog = new THREE.FogExp2(15655413, 0.0002);
     renderer.setClearColor(scene.fog.color);
-   
+
     //
 
     boxGroup = new THREE.Group();
 
     const torusKnotGeometry = new THREE.TorusKnotGeometry(2.7, 1.1, 300, 20, 2, 3);
     const sphereGeometry = new THREE.SphereGeometry(2, 30, 20, 30);
-    const centerObjMaterial = new THREE.MeshLambertMaterial({ color: 16737818, opacity: 0.54, transparent: true, emissive: 3})
-    const centerObjSphereMaterial = new THREE.MeshLambertMaterial({ color: 8215273, opacity: .2, transparent: true, emissive: 6})
+    const centerObjMaterial = new THREE.MeshLambertMaterial({ color: 16737818, opacity: 0.54, transparent: true, emissive: 3 })
+    const centerObjSphereMaterial = new THREE.MeshLambertMaterial({ color: 8215273, opacity: .2, transparent: true, emissive: 6 })
 
     const centerWorldContainer = new THREE.Object3D();
     scene.add(centerWorldContainer);
     centerObjects.push(centerWorldContainer);
 
-    centerObj = new THREE.Mesh(torusKnotGeometry, centerObjMaterial);
+    // centerObj = new THREE.Mesh(torusKnotGeometry, centerObjMaterial);
+
+    centerObj = new THREE.Mesh(torusKnotGeometry, buildTwistMaterial(20.0));
+
+
     centerObj.scale.set(.75, .75, .75);
     centerWorldContainer.add(centerObj);
     centerObjects.push(centerObj);
 
     let centerObjSphere = new THREE.Mesh(sphereGeometry, centerObjSphereMaterial);
-    centerObjSphere.scale.set(3.5,3.5, 3.5);
+    centerObjSphere.scale.set(3.5, 3.5, 3.5);
     centerObj.add(centerObjSphere);
     // centerObjects.push(centerObjSphere);
 
 
     function makeRotatorObjInstance(geometry, color, x, y, z) {
-      const rotatorMaterial = new THREE.MeshLambertMaterial({ color: color, opacity: 0.4, transparent: true, emissive: 1})
+      const rotatorMaterial = new THREE.MeshLambertMaterial({ color: color, opacity: 0.4, transparent: true, emissive: 1 })
       const rotatorObjInstance = new THREE.Mesh(torusKnotGeometry, rotatorMaterial);
       rotatorObjInstance.position.x = x;
       rotatorObjInstance.position.y = y;
@@ -437,19 +465,19 @@ function windowOnLoad() {
       centerWorldContainer.add(rotatorObjInstance); //rotate
 
       let rotatorSphere = new THREE.Mesh(sphereGeometry, centerObjSphereMaterial);
-      rotatorSphere.scale.set(1.5,1.5, 1.5);
+      rotatorSphere.scale.set(1.5, 1.5, 1.5);
       rotatorObjInstance.add(rotatorSphere);
       return rotatorObjInstance;
-    } 
+    }
 
     const triLength = 60;
-    const triHeight = Math.sqrt(3)/2*triLength;
-    const ax = - triLength/2;
-    const ay = -triHeight/3;
-    const bx = triLength/2;
-    const by = -triHeight/3;
+    const triHeight = Math.sqrt(3) / 2 * triLength;
+    const ax = - triLength / 2;
+    const ay = -triHeight / 3;
+    const bx = triLength / 2;
+    const by = -triHeight / 3;
     const cx = 0;
-    const cy = 2/3*triHeight;
+    const cy = 2 / 3 * triHeight;
 
     rot1 = makeRotatorObjInstance(torusKnotGeometry, 6823151, ax, 0, ay);
     rot2 = makeRotatorObjInstance(torusKnotGeometry, 1514735, bx, 0, by);
@@ -495,23 +523,23 @@ function windowOnLoad() {
     //   objects.push(rotat);
     // }
 
-    
+
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.maxPolarAngle = Math.PI * 0.499;
     controls.target.set(0, 10, 0);
     controls.minDistance = 10.0;
     controls.maxDistance = 800.0;
-    controls.listenToKeyEvents( window ); // optional
+    controls.listenToKeyEvents(window); // optional
     controls.screenSpacePanning = false;
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.keyPanSpeed = 50;
     controls.update();
     // https://threejs.org/docs/#examples/en/controls/OrbitControls.keys
-  
+
     // const geometry = new THREE.TorusKnotGeometry(10, 6, 100, 14, 4, 2);
- 
+
     function makeFriendModal(friendID, id) {
       let container = document.getElementById("container");
       let friendModalDiv = document.createElement("div");
@@ -611,6 +639,7 @@ function windowOnLoad() {
       scene.add(sphereAtHeartOfFriend);
 
       friendShapePromise.then((friendShapeGLTF) => {
+        // buildTwistMaterial(20.0)
         const friendShape = friendShapeGLTF.clone()
         friendMap[i] = friendShape;
         setupObject(friendShape, i, boxGroup, boxSpeeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, 20);
@@ -620,14 +649,9 @@ function windowOnLoad() {
         jellyfish[i] = jelly.clone();
       });
 
-      // setTimeout(function () {
-      //   const gltfLoader2 = new GLTFLoader();
-      //   gltfLoader2.load('./img/oct.glb', (gltf) => {
-      //     jellyfish[i] = gltf.scene;
-      //     // setupObject(jellyfish, i, boxGroup, boxSpeeds, 10, 10, 10, rotationX, rotationY, rotationZ, 30);
-      //   });
-      // }, Math.random() * 5000 + 1000);
-     
+      flyingBoxes[i] = makeFlyingBoxes(positionX, positionY, positionZ);
+      flyingSpheres[i] = makeFlyingSpheres(positionX, positionY, positionZ);
+
       friendOrbs[i] = sphereAtHeartOfFriend;
 
       setupObject(sphereAtHeartOfFriend, i, boxGroup, boxSpeeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, 1);
@@ -641,6 +665,44 @@ function windowOnLoad() {
     raycaster = new THREE.Raycaster();
     document.addEventListener('mousemove', onDocumentMouseMove);
     window.addEventListener('resize', onWindowResize);
+  }
+
+  function buildTwistMaterial(amount) {
+
+    const material = new THREE.MeshNormalMaterial();
+    material.opacity = 0.54;
+    material.transparent = true;
+    material.onBeforeCompile = function (shader) {
+
+      shader.uniforms.time = { value: 0 };
+
+      shader.vertexShader = 'uniform float time;\n' + shader.vertexShader;
+      shader.vertexShader = shader.vertexShader.replace(
+        '#include <begin_vertex>',
+        [
+          `float theta = sin( time + position.y ) / ${amount.toFixed(1)};`,
+          'float c = cos(theta);',
+          'float s = sin(theta);',
+          'mat3 m = mat3(c, 0, s, 0, 1, 0, -s, 0, c);',
+          'vec3 transformed = vec3(position) * m;',
+          'vNormal = vNormal * m;'
+        ].join('\n')
+      );
+
+      material.userData.shader = shader;
+
+    };
+
+    // Make sure WebGLRenderer doesnt reuse a single program
+
+    material.customProgramCacheKey = function () {
+
+      return amount;
+
+    };
+
+    return material;
+
   }
 
   let loadingScreenDiv = document.getElementById("loadingScreenDiv");
@@ -761,7 +823,7 @@ function windowOnLoad() {
         if (msg.username == username) {
           console.log("don't display sparkles");
         } else {
-          console.log(j, snapshot.val());
+          // console.log(j, snapshot.val());
         }
       } else {
         // console.log(`${j}: not a new item`);
@@ -793,6 +855,15 @@ function windowOnLoad() {
 
 
   function render() {
+
+    scene.traverse(function (child) {
+      if (child.isMesh) {
+        const shader = child.material.userData.shader;
+        if (shader) {
+          shader.uniforms.time.value = performance.now() / 1000;
+        }
+      }
+    });
     // example of updating sky in render
     // sky.material.uniforms['turbidity'].value = 0;
 
@@ -819,7 +890,7 @@ function windowOnLoad() {
     centerObjects.forEach((obj) => {
       obj.rotation.y = time;
       centerObj.rotation.x = time * 0.5;
-    centerObj.rotation.z = time * 0.51;
+      centerObj.rotation.z = time * 0.51;
     });
 
 
@@ -901,9 +972,9 @@ function windowOnLoad() {
   }
 
   // fade the jellies by changing their opacity
-  function fadeJellyfishFromScene(jellies) {
+  function fadeFlyingThingsFromScene(things) {
     var exit = false;
-    jellies.forEach(function (jelly) {
+    things.forEach(function (jelly) {
       jelly.traverse(function (o) {
         if (o.isMesh) {
           const opacity = o.material.opacity;
@@ -919,8 +990,8 @@ function windowOnLoad() {
       });
     });
 
-    if(exit == true) {
-      jellies.forEach(function(jelly) {
+    if (exit == true) {
+      things.forEach(function (jelly) {
         const parent = jelly.parent;
         parent.remove(jelly);
         modifyMesh(jelly, (o) => {
@@ -928,9 +999,23 @@ function windowOnLoad() {
         });
       });
     } else {
-      setTimeout(fadeJellyfishFromScene, 200, jellies);
+      setTimeout(fadeFlyingThingsFromScene, 200, things);
     }
 
+  }
+
+  function makeRotatingCreatures(flyingThings){
+    flyingThings.forEach(function (box) {
+      var setup = box.iHaveBeenSetup || false;
+      if (setup == true) {
+        boxGroup.add(box);
+      } else {
+        const rotation = mkGoodRotation();
+        const position = mkGoodPosition();
+        setupObject(box, 100, boxGroup, boxSpeeds, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, 30);
+        box.iHaveBeenSetup = true;
+      }
+    });
   }
 
   function clickOrTouchFriendOrbs(event) {
@@ -949,36 +1034,26 @@ function windowOnLoad() {
     if (intersectsRot1.length > 0) {
       rot1Sound.play();
       rot1Sound.volume = 0.08;
-      jellyfish.forEach(function(jelly) {
-        var setup = jelly.iHaveBeenSetup || false;
-        if(setup == true) {
-          boxGroup.add(jelly);
-        } else {
-          const rotation = mkGoodRotation();
-          const position = mkGoodPosition();  
-          setupObject(jelly, 100, boxGroup, boxSpeeds, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, 30);
-          jelly.iHaveBeenSetup = true;  
-        }
-      });
-
-      fadeJellyfishFromScene(jellyfish);
-
+      makeRotatingCreatures(jellyfish);
+      fadeFlyingThingsFromScene(jellyfish);
       // skyBright = 0;
-      // init();
       console.log("h1");
     }
     let intersectsRot2 = raycaster.intersectObjects([rot2], true);
     if (intersectsRot2.length > 0) {
       rot2Sound.play();
       rot2Sound.volume = 0.08;
-      // spSource, spSpread, spLight, spSize, spQuant, numofsets
+      makeRotatingCreatures(flyingBoxes);
+      fadeFlyingThingsFromScene(flyingBoxes);
+
       console.log("h2");
     }
     let intersectsRot3 = raycaster.intersectObjects([rot3], true);
     if (intersectsRot3.length > 0) {
       rot3Sound.play();
       rot3Sound.volume = 0.08;
-      // spSource, spSpread, spLight, spSize, spQuant, numofsets
+      makeRotatingCreatures(flyingSpheres);
+      fadeFlyingThingsFromScene(flyingSpheres);
       console.log("h3");
     }
 
@@ -1015,81 +1090,19 @@ function windowOnLoad() {
 
   let currBtn;
 
-  // let video = document.getElementById("video");
-  // let source = document.createElement("source");
-  // video.appendChild(source);
-
-  // const wrapper = document.getElementById("wrapper");
-  // const wrapperBtn = document.getElementById("wrapperBtn");
-  // const wrapperToggleDiv = document.getElementById("wrapperToggleDiv");
-
-  // const btn1 = document.getElementById("btn1");
-  // const btn2 = document.getElementById("btn2");
-  // const btn3 = document.getElementById("btn3");
-  // const btn4 = document.getElementById("btn4");
-  // const btn5 = document.getElementById("btn5");
-  // const btn6 = document.getElementById("btn6");
-
   document.addEventListener(
     "click",
     function (event) {
       if (toggleOpen == false) {
-        // console.log("toggle is closed - return");
-        // return;
       } else {
-        // console.log("toggle is open");
         if (event.target.classList.contains(wrapper)) { // || event.target.contains( wrapper )
           console.log("clicking on wrapper or button - return");
-          // return;
         } else {
           console.log("clicking on world - run code");
-
-          // if (wrapper.classList.contains("openWrapper")) {
-          //   wrapper.classList.remove("openWrapper");
-          //   wrapperBtn.classList.add("wrapperBtnClosing");
-          //   toggleOpen = false;
-          // }
         }
       }
     },
   );
-
-  // wrapperBtn.addEventListener(
-  //   "click",
-  //   function (event) {
-  //     if (toggleOpen == false) {
-  //       // console.log("toggle is opening");
-  //       if (wrapperBtn.classList.contains('wrapperBtnClosed')) {
-  //         wrapperBtn.classList.remove("wrapperBtnClosed");
-  //       }
-  //       if (wrapperBtn.classList.contains('wrapperBtnClosing')) {
-  //         wrapperBtn.classList.remove("wrapperBtnClosing");
-  //       }
-  //       wrapperBtn.classList.add("wrapperBtnOpening");
-  //       wrapper.classList.add("openWrapper");
-  //       toggleOpen = true;
-  //       // console.log(`toggle should be open ${toggleOpen}`);
-  //     } else {
-  //       console.log("toggle is closing");
-  //       if (wrapperBtn.classList.contains('wrapperBtnOpening')) {
-  //         wrapperBtn.classList.remove("wrapperBtnOpening");
-  //       }
-  //       wrapperBtn.classList.add("wrapperBtnClosing");
-  //       wrapper.classList.remove("openWrapper");
-  //       toggleOpen = false;
-  //       // console.log(`toggle should be closed ${toggleOpen}`);
-
-
-  //     }
-  //     // toggleOpen != toggleOpen
-  //     // console.log(toggleOpen);
-  //     // toggleOpen
-  //   },
-  // );
-
-  // new toggle info stuff
-
-  // settings menu stuff
 
   let settingsDropdown = document.getElementById("settingsDropdown");
   let toggleChangeNameInput = document.getElementById("toggleChangeNameInput");
@@ -1167,80 +1180,6 @@ function windowOnLoad() {
     // }
     // muteSounds();
   });
-
-  // new toggle info stuff end
-
-  // btn1.addEventListener(
-  //   "click",
-  //   function () {
-  //     updateBtnStyle(btn1);
-  //     // source.setAttribute("src", "img/v1.mp4");
-  //     // video.load();
-  //     playSong(song1);
-  //   },
-  //   false
-  // );
-  // btn2.addEventListener(
-  //   "click",
-  //   function () {
-  //     updateBtnStyle(btn2);
-  //     // source.setAttribute("src", "img/v2.mp4");
-  //     // video.load();
-  //     playSong(song2);
-  //   },
-  //   false
-  // );
-  // btn3.addEventListener(
-  //   "click",
-  //   function () {
-  //     updateBtnStyle(btn3);
-  //     // source.setAttribute("src", "img/v3.mp4");
-  //     // video.load();
-  //     playSong(song3);
-  //   },
-  //   false
-  // );
-  // btn4.addEventListener(
-  //   "click",
-  //   function () {
-  //     updateBtnStyle(btn4);
-  //     // source.setAttribute("src", "img/v4.mp4");
-  //     // video.load();
-  //     playSong(song4);
-  //   },
-  //   false
-  // );
-  // btn5.addEventListener(
-  //   "click",
-  //   function () {
-  //     updateBtnStyle(btn5);
-  //     // source.setAttribute("src", "img/v5.mp4");
-  //     // video.load();
-  //     playSong(song5);
-  //   },
-  //   false
-  // );
-  // btn6.addEventListener(
-  //   "click",
-  //   function () {
-  //     updateBtnStyle(btn6);
-  //     // source.setAttribute("src", "img/v6.mp4");
-  //     // video.load();
-  //     playSong(song6);
-  //   },
-  //   false
-  // );
-
-  // function updateBtnStyle(clickedBtn) {
-  //   // remove the class from the old button (which is the "current" button)
-  //   if (currBtn !== undefined) {
-  //     currBtn.classList.remove("currBtn");
-  //   }
-  //   currBtn = clickedBtn; // update the "current" button to the most recently clicked button
-  //   clickedBtn.classList.add("currBtn");
-  // }
-
-
 
   document.body.onload = nameDisplayCheck;
 }
