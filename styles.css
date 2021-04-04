@@ -85,20 +85,23 @@ body {
   line-height: 2.6rem;
 }
 
-#languageP, #languagePS {
+#languageSwitchLink {
 margin-top: 10rem;
 text-decoration: none;
-}
-
-#language {
   font-size: 1rem;
   color: rgba(191 202 255); 
-  text-decoration: none;
   /* letter-spacing: 4px; */
-
 }
 
-#language:hover {
+#languageSwitchLink a {
+  margin-top: 10rem;
+  text-decoration: none;
+    font-size: 1rem;
+    color: rgba(191 202 255); 
+    /* letter-spacing: 4px; */
+  }
+
+#languageSwitchLink:hover {
   text-decoration: underline;
   font-size: 1rem;
   color: rgba(191 202 255); 
@@ -131,7 +134,7 @@ text-decoration: none;
   /* color: rgb(213, 20, 243); */
 }
 
-#motto, #mottoS{
+#motto {
   font-style: italic;
   font-size: 1.3rem;
 }
@@ -290,7 +293,7 @@ text-decoration: none;
 
 }
 
-#changeNameInput::-webkit-input-placeholder, #changeNameInputS::-webkit-input-placeholder {
+#changeNameInput::-webkit-input-placeholder {
 color: rgb(254, 228, 237);
 }
 
@@ -555,7 +558,7 @@ input {
   /* width: 2rem; */
 }
 
-#changeNameInput, #changeNameInputS{
+#changeNameInput {
   background-color: rgba(178, 124, 211, 0.85);
   /* border: .5px solid white; */
   flex: auto;
@@ -666,7 +669,7 @@ input {
     margin-top: 5rem;
   }
 
-  #motto, #mottoS{
+  #motto {
     font-style: italic;
     font-size: 1.8rem;
   }
@@ -837,7 +840,7 @@ input {
 #settingsDropdown {
   margin-top: 5rem;
   min-width: 15rem;
-  max-width: 20rem;
+  max-width: 60vw;
   z-index: 1;
   position: fixed;
   flex-direction: column;
@@ -857,7 +860,7 @@ input {
     padding: 0;
 }
 
-.tempi {
+.dropdownContainer {
     /* color: black; */
     padding: 0.8rem 0;
     text-decoration: none;
@@ -865,7 +868,7 @@ input {
     color:rgba(76, 61, 134, .8); 
     font-size: 1rem;
 }
-.tempi:hover {
+.dropdownContainer:hover {
   background-color: rgb(196, 152, 222, 59%);
   border-radius: .6rem;
 }
@@ -923,7 +926,7 @@ input {
   transform: translateX(-50%);
 }
 
-#toggleChangeNameInput, #toggleChangeNameInputS {
+#toggleChangeNameInput {
   flex: 0 0 50%;
   padding:7px;
   color: rgba(76, 61, 134, .8);

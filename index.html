@@ -24,63 +24,29 @@
 </head>
 
 <body class="preload">
-
-  <!-- <video autoplay muted loop playsinline id="video"> -->
-  <!-- <source src="img/v1.mp4" type="video/mp4"> -->
-  <!-- </video> -->
-
-  <!-- <div id="wrapperToggleDiv">
-    <div class="btn noselect wrapperBtn wrapperBtnClosed" id="wrapperBtn">
-      <p>``</p>
-    </div>
-  </div>
-
-  <div class="wrapper" id="wrapper">
-    <div class="btn noselect" id="btn1">
-      <p>v≠v</p>
-    </div>
-    <div class="btn noselect " id="btn2">
-      <p>løl</p>
-    </div>
-    <div class="btn noselect" id="btn3">
-      <p>u§u</p>
-    </div>
-  </div> -->
-
   <div id="wrapperToggleDiv" class="settingsMenu">
     <div id="settingsBtn" class="btn noselect wrapperBtn wrapperBtnClosed">``</div>
     <div class="slide-in from-left">
-      <!-- <div class="slide-in-content"> -->
-
       <ul id="settingsDropdown" class="slide-in-content">
-
-        <li class="tempi">
+        <li class="dropdownContainer">
           <form id='changeNameForm' onSubmit={this.onSubmit}>
             <div id='changeNameSlider' class='collapsed'>
-              <input type='button' id='toggleChangeNameInput' value='Change name?' lang="en">
-              <input type='button' id='toggleChangeNameInputS' value='¿Quieres cambiar tu nombre?' lang="es">
-
-              <input type='text' id='changeNameInput' tabindex='-1' placeholder='New name' size=12 lang="en">
-              <input type='text' id='changeNameInputS' tabindex='-1' placeholder='Nuevo nombre' size=12 lang="es">
-
-              <input type='submit' id='okButton' tabindex='-1' value='ok' lang="en">
-              <input type='submit' id='okButtonS' tabindex='-1' value='ok' lang="es">
+              <input type='button' id="toggleChangeNameInput" name='toggleChangeNameInput' value='¿Quieres cambiar tu nombre?'>
+              <input type='text' id="changeNameInput" name='changeNameInput' tabindex='-1' placeholder='Nuevo nombre' size=12>
+              <input type='submit' id='okButton' tabindex='-1' value='ok'>
             </div>
           </form>
-        <li class="tempi">
+        <li class="dropdownContainer">
           <label class="toggleLabel">
-            <span class="toggleLabel" lang="en"></span>Sound</span>
-            <!-- <span class="toggleLabel" lang="es"></span>Sonido</span> -->
+            <span class="toggleLabel" id="soundLabel">Sonido</span>
             <input class="toggleSoundCheckbox" name="toggleSoundCheckbox" type="checkbox" checked>
             <div class="toggleSoundDiv"></div>
           </label>
         </li>
-        <li class="tempi">
-          <a target="blank" href="/credits.html" lang="en">Made by Marie Claire LeBlanc Flanagan & friends</a>
-          <a target="blank" href="/credits.html" lang="es">Desarrollado por Marie Claire LeBlanc Flanagan & friends</a>
+        <li class="dropdownContainer">
+          <a target="blank" id='credits' href="/credits.html">Desarrollado por omarieclaire</a>
         </li>
       </ul>
-      <!-- </div> -->
     </div>
 
   </div>
@@ -90,20 +56,13 @@
   <!-- <canvas id="canvas"></canvas> -->
   <div id="loadingScreenDiv" class="loadingScreenDiv">
     <p class="welcomeMsg" id="sanctuary">sanctuary</p>
-    <p class="welcomeMsg" id="motto" lang="en">a soft space for gentle connection</p>
-    <p class="welcomeMsg" id="mottoS" lang="es">Un espacio tranquilo de conexión</p>
-
-    <!-- <p id="welcomeMsg"><span id="sanctuary">sanctuary</span><br><span id="motto">a soft space for gentle connection</span></p> -->
+    <p class="welcomeMsg" id="motto">Un espacio tranquilo de conexión</p>
     <form id="usernameForm">
-      <input name="name" lang="en" autocomplete="off" id="username" type="text" placeholder="your name or username"
-        required autofocus>
-      <input name="name" lang="es" autocomplete="off" id="usernameS" type="text"
-        placeholder="Tu nombre o nombre de usuario" required autofocus>
-      <input type="submit" lang="en" value="begin" id="submitUsername" onsubmit="return false">
-    <input type="submit" lang="es" value="Comenzar" id="submitUsernameS" onsubmit="return false">
+      <input name="initialUsernameInput" autocomplete="off" id="username" type="text" placeholder="Tu nombre o nombre de usuario" required autofocus>
+      <input type="submit" name="submitInitialUsername" value="Comenzar" id="submitUsername" onsubmit="return false">
     </form>
-    <p class="welcomeMsg" id="languageP" lang="es"><a id="language" href="">english</a></p>
-    <p class="welcomeMsg" id="languagePS" lang="en"><a id="language" href="">español</a></p>
+    <p class="welcomeMsg" id="languageSwitchLink"><a href="">english</a></p>
+    <!-- <p class="welcomeMsg" id="languagePS" lang="en"><a id="language" href="">español</a></p> -->
   </div>
 
   <script type="x-shader/x-vertex" id="vertexshader">

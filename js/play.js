@@ -73,9 +73,12 @@ const rot1Sound = new Audio("audio/rot1.mp3");
 const rot2Sound = new Audio("audio/rot2.mp3");
 const rot3Sound = new Audio("audio/rot3.mp3");
 
-var jellyfish = [];
-var flyingBoxes = [];
-var flyingSpheres = [];
+let jellyfish = [];
+let jellyfishOnScreen = [];
+let flyingBoxes = [];
+let flyingBoxesOnScreen = [];
+let flyingSpheres = [];
+let flyingSpheresOnScreen = [];
 
 
 
@@ -91,10 +94,10 @@ let friendQuestionsS = {
   1: "¿Qué significa eso?",
   2: "¿Quién te inspira?",
   3: "¿Cómo aprendes?",
-  4: "¿Desarías tener más?", 
+  4: "¿Desarías tener más?",
   5: "¿Puedes imaginar una mejor alternativa?",
   6: "¿Qué cosa sorprendente has aprendido?",
-  7: "¿Qué hay al final?", 
+  7: "¿Qué hay al final?",
   8: "Describe una mañana hermosa",
   9: "¿Con quién te gustaría poder hablar?",
   10: "Describe algo suave que ames",
@@ -225,7 +228,7 @@ function windowOnLoad() {
     return boxGeometryInstance;
   }
 
-  const nsphereGeometry = new THREE.TorusGeometry( 18, .8, 21, 100, 6.3 );
+  const nsphereGeometry = new THREE.TorusGeometry(18, .8, 21, 100, 6.3);
   function makeFlyingSpheres(x, y, z) {
     let sphereGeometryInstance = new THREE.Mesh(nsphereGeometry, buildTwistMaterial(0.2));
     sphereGeometryInstance.position.x = x;
@@ -338,8 +341,11 @@ function windowOnLoad() {
       if (localStorage.getItem('name')) {
         let name = localStorage.getItem('name');
         return name;
+        console.log("got a name");
         // h1.textContent = 'Welcome, ' + name;
       } else {
+        console.log("noname");
+
         // h1.textContent = 'Welcome to our website ';
       }
     }
@@ -347,7 +353,6 @@ function windowOnLoad() {
     let savedUserName = nameDisplayCheck();
     if (savedUserName) {
       document.getElementById("username").value = savedUserName;
-      document.getElementById("usernameS").value = savedUserName;
     }
 
     container = document.getElementById('container');
@@ -613,7 +618,8 @@ function windowOnLoad() {
       textInput.type = "text";
       textInput.placeholder = "";
       submitInput.type = "submit";
-      submitInput.value = "send";
+      submitInput.name = "sendYourBeautifulSelf"
+      submitInput.value = "✓";
 
       printFriendNumberDiv.appendChild(friendNumber);
       printTextDiv.appendChild(printText);
@@ -751,31 +757,6 @@ function windowOnLoad() {
     function (event) {
       event.preventDefault();
       let currUsername = document.getElementById("username").value;
-      if (currUsername != "") {
-        let usernameForm = document.getElementById("usernameForm");
-      } else {
-        return
-      }
-      localStorage.setItem('name', currUsername);
-      username = nameDisplayCheck();
-      loadingScreenDiv.classList.add("fade");
-      seaSound.play();
-      seaSound.volume = 0.08;
-      seaSound.loop = true;
-      backgroundSound.play();
-      backgroundSound.volume = 0.08;
-      backgroundSound.loop = true;
-      setTimeout(function () { loadingScreenDiv.style.display = "none"; }, 600);
-    },
-    false
-  );
-
-  let submitUsernameS = document.getElementById("submitUsernameS");
-  submitUsernameS.addEventListener(
-    "click",
-    function (event) {
-      event.preventDefault();
-      let currUsername = document.getElementById("usernameS").value;
       if (currUsername != "") {
         let usernameForm = document.getElementById("usernameForm");
       } else {
@@ -1034,41 +1015,40 @@ function windowOnLoad() {
     }
   }
 
-  // fade the jellies by changing their opacity
-  function fadeFlyingThingsFromScene(things) {
-    var exit = false;
-    things.forEach(function (jelly) {
-      jelly.traverse(function (o) {
-        if (o.isMesh) {
-          const opacity = o.material.opacity;
-          if (opacity > 0.01) {
-            o.material.opacity = opacity - 0.01;
-          } else {
-            // we exit if any opacity is < 0.01
-            // but they should all have the same value
-            // so its not a big deal.
-            exit = true;
-          }
-        }
-      });
-    });
+  const fadeAmount = 1 / numberOfFriends;
 
-    if (exit == true) {
-      things.forEach(function (jelly) {
-        const parent = jelly.parent;
-        parent.remove(jelly);
-        modifyMesh(jelly, (o) => {
-          o.material.opacity = 0.5;
+  function fadeFlyingThingsFromScene(thingsOnScreen, counter) {
+    console.log('fading');
+    if (thingsOnScreen.length === 0) {
+      // do nothing / return
+    } else {
+
+      let minimumOpacity = 1.0;
+
+      thingsOnScreen.forEach((thing) => {
+        modifyMesh(thing, (o) => {
+          const opacity = o.material.opacity;
+          minimumOpacity = Math.min(opacity, minimumOpacity);
+          if (opacity > fadeAmount) {
+            o.material.opacity = opacity - fadeAmount;
+          }
         });
       });
-    } else {
-      setTimeout(fadeFlyingThingsFromScene, 200, things);
-    }
 
+
+      // fadeAmount = 0.025
+      if (minimumOpacity < fadeAmount) {
+        const thingOnScreen = thingsOnScreen.pop();
+        boxGroup.remove(thingOnScreen);
+      }
+
+      setTimeout(fadeFlyingThingsFromScene, 200, thingsOnScreen);
+    }
   }
 
-  function makeRotatingCreatures(flyingThings){
+  function makeRotatingCreatures(flyingThings, flyingThingsOnScreen) {
     flyingThings.forEach(function (box) {
+      flyingThingsOnScreen.push(box);
       var setup = box.iHaveBeenSetup || false;
       if (setup == true) {
         boxGroup.add(box);
@@ -1097,23 +1077,23 @@ function windowOnLoad() {
     if (intersectsRot1.length > 0) {
       rot1Sound.play();
       rot1Sound.volume = 0.08;
-      makeRotatingCreatures(jellyfish);
-      fadeFlyingThingsFromScene(jellyfish);
+      makeRotatingCreatures(jellyfish, jellyfishOnScreen);
+      fadeFlyingThingsFromScene(jellyfishOnScreen);
       // skyBright = 0;
     }
     let intersectsRot2 = raycaster.intersectObjects([rot2], true);
     if (intersectsRot2.length > 0) {
       rot2Sound.play();
       rot2Sound.volume = 0.08;
-      makeRotatingCreatures(flyingBoxes);
-      fadeFlyingThingsFromScene(flyingBoxes);
+      makeRotatingCreatures(flyingBoxes, flyingBoxesOnScreen);
+      fadeFlyingThingsFromScene(flyingBoxesOnScreen);
     }
     let intersectsRot3 = raycaster.intersectObjects([rot3], true);
     if (intersectsRot3.length > 0) {
       rot3Sound.play();
       rot3Sound.volume = 0.08;
-      makeRotatingCreatures(flyingSpheres);
-      fadeFlyingThingsFromScene(flyingSpheres);
+      makeRotatingCreatures(flyingSpheres, flyingSpheresOnScreen);
+      fadeFlyingThingsFromScene(flyingSpheresOnScreen);
     }
 
     let intersectsFriend = raycaster.intersectObjects(boxGroup.children, true);
@@ -1165,12 +1145,11 @@ function windowOnLoad() {
 
   let settingsDropdown = document.getElementById("settingsDropdown");
   let toggleChangeNameInput = document.getElementById("toggleChangeNameInput");
-  let toggleChangeNameInputS = document.getElementById("toggleChangeNameInputS");
   let settingsBtn = document.getElementById("settingsBtn");
   let changeNameInput = document.getElementById("changeNameInput");
   let changeNameSlider = document.getElementById("changeNameSlider");
   let changeNameForm = document.getElementById("changeNameForm");
-  let changeNameFormS = document.getElementById("changeNameFormS");
+  // let changeNameFormS = document.getElementById("changeNameFormS");
 
   // let toggleSoundCheckbox = document.getElementById("toggleSoundCheckbox");
 
@@ -1180,8 +1159,8 @@ function windowOnLoad() {
     document.getElementsByClassName('slide-in')[0].classList.toggle('show');
     closeAllModals(event);
     // console.log("closeem");
-    toggleChangeNameInput.value = `Change name, ${username}?`;
-    toggleChangeNameInputS.value = `¿Quieres cambiar tu nombre, ${username}?`;
+    // toggleChangeNameInput.value = `Change name, ${username}?`;
+    // toggleChangeNameInputS.value = `¿Quieres cambiar tu nombre, ${username}?`;
   }
 
   settingsBtn.addEventListener("click", settingsMenuOpen);
@@ -1199,22 +1178,24 @@ function windowOnLoad() {
   }
 
   toggleChangeNameInput.onclick = expand;
-  toggleChangeNameInputS.onclick = expand;
 
 
   changeNameInput.onblur = function () {
     setTimeout(collapse, 100);
   }
 
-  changeNameForm.onsubmit = function (e) {
+  document.getElementById("okButton").onclick = function changeContent(e) {
     e.preventDefault();
-    console.log(changeNameInput.value);
+    // console.log(changeNameInput.value);
     localStorage.setItem('name', changeNameInput.value);
+    // console.log(changeNameInput.value);
     username = nameDisplayCheck();
 
-    document.getElementById("toggleChangeNameInput").value = `Change name, ${username}?`;
-    document.getElementById("toggleChangeNameInputS").value = `¿Quieres cambiar tu nombre, ${username}?`;
-
+    if (currentLanguage = 'es') {
+      document.getElementById("toggleChangeNameInput").value = `¿Quieres cambiar tu nombre, ${username}?`;
+    } else {
+      document.getElementById("toggleChangeNameInput").value = `Change name, ${username}?`;
+    }
     collapse();
   }
 
@@ -1252,6 +1233,18 @@ function windowOnLoad() {
   document.body.onload = nameDisplayCheck;
 
   // language
+  let languageSwitchLink = document.getElementById("languageSwitchLink");
+  let motto = document.getElementById("motto");
+  let initialUsernameInput = document.getElementsByName('initialUsernameInput')[0];
+  let submitUsernameValue = document.getElementsByName('submitInitialUsername')[0];
+  let toggleChangeNameInputValue = document.getElementsByName("toggleChangeNameInput")[0];
+  // let changeNameInput = document.getElementsByName("changeNameInput")[0]; 
+  let soundLabel = document.getElementById("soundLabel");
+  let credits = document.getElementById("credits");
+  let credits1 = document.getElementById("credits1");
+  let credits2 = document.getElementById("credits2");
+  let sendYourBeautifulSelf = document.getElementsByName('sendYourBeautifulSelf')[0];
+
 
   var currentLanguage = 'es';
   function updateVisibility(lang, visibility) {
@@ -1264,22 +1257,65 @@ function windowOnLoad() {
 
   function handleLanguageUpdate(event) {
     event.preventDefault();
-    if(currentLanguage == 'en') {
+    if (currentLanguage == 'en') {
       updateVisibility('en', 'none');
       updateVisibility('es', '');
       currentLanguage = 'es';
+      //change things to es
+      languageSwitchLink.innerHTML = "english";
+
+      motto.innerHTML = "Un espacio tranquilo de conexión";
+      // motto.lang = "es";
+      initialUsernameInput.placeholder = "Tu nombre o nombre de usuario";
+      // initialUsernameInput.lang = "es";
+      submitUsernameValue.value = "Comenzar";
+      // submitUsernameValue.lang = "es";
+      // languageLink.lang = "es";
+      toggleChangeNameInput.value = `¿Quieres cambiar tu nombre, ${username}?`;
+      changeNameInput.placeholder = "Nuevo nombre";
+      soundLabel.innerHTML = "Sonido";
+      // soundLabel.lang = "es";
+      credits.innerHTML = "Desarrollado por Marie Claire LeBlanc Flanagan & friends";
+      // toggleLanguage.lang = "es";
+      credits1.innerHTML = "Sanctuary es un espacio amable, delicado y tranquilo para la introspección y conexión ambiental desarrollado por <a target='_blank' href='https://marieflanagan.com/'>Marie Claire LeBlanc Flanagan para Proyecto Bios.</a>";
+      credits2.innerHTML = "Gracias a: Luján Oulton, La Embajada de Canadá para Argentina y Paraguay, Aaron Levin, J por las medusas y el soporte en Blender, los creadores y colaboradores de Three.js library, y a Soundbible. Gracias especiales a todos los playtesters: AndyWaro, Bee Cavello, Craig Fahner, Ellen LeBlanc Flanagan, Erik O, Eryn Tempest, Ethan Muller, Hanna Thomas Uose, Ida Toft, Imaginary Residency, Jack, Jan van der Lugt, John W, Kevin Ray, King Demitri, Kofi O, Lu, Liane Décary-Chen, Marie D, Martina Flanagan, Nick Rachel Weldon, Raphaël de Courville, Robert F, Sagan Y, Shobhit Sharma, Stephen R. Smith, and rich.gg. Gracias también a todos quienes contribuyeron en el desarrollo de preguntas interesantes y significativas: Alexander King., Amanda Grant, Bertine van Hövell, Eva Chérie, jkac, Mariám Zakarian, Nathalie Pozzi, Nicola Oddy, Steven Tu, Sulyn Cedar, Zach Gage.";
+      sendYourBeautifulSelf.value = "Enviar";
+
+
     } else {
       updateVisibility('en', '');
       updateVisibility('es', 'none');
       currentLanguage = 'en';
+      //change things to en
+      languageSwitchLink.innerHTML = "español";
+
+      motto.innerHTML = "a soft space for gentle connection";
+      // motto.lang = "en";
+      initialUsernameInput.placeholder = "your name or username";
+      // initialUsernameInput.lang = "en";
+      submitUsernameValue.value = "begin";
+      // submitUsernameValue.lang = "en";
+      // languageLink.innerHTML = "español";
+      // languageLink.lang = "en";
+      toggleChangeNameInput.value = `Change name, ${username}?`;
+      // toggleChangeNameInput.lang = "en";
+      changeNameInput.placeholder = "New name";
+      // changeNameInput.lang = "en";
+      soundLabel.innerHTML = "Sound";
+      // soundLabel.lang = "en";
+      credits.innerHTML = "Made by Marie Claire LeBlanc Flanagan & friends";
+      // toggleLanguage.lang = "en";
+      credits1.innerHTML = "Sanctuary is a peaceful, gentle, soft space for slow and ambient connection with others made by <a target='_blank' href='https://marieflanagan.com/'>Marie Claire LeBlanc Flanagan for Proyecto Bios.</a>";
+      credits2.innerHTML = "Thank you Luján Oulton, The Canadian Embassy, Imaginary Residency, Aaron Levin, J for the jellyfish and Blender support, the creators and stewards of the Three.js library, and Soundbible. Special thanks to the playtesters who generously gave feedback: AndyWaro, Bee Cavello, Craig Fahner, Daniel Brandes, Ellen LeBlanc Flanagan, Evelyne Drouin, Erik O, eryn tempest, Ethan Muller, Hanna Thomas Uose, Ida Toft, Isabella Stefanescu, Jack, Jan van der Lugt, John W, Kay Dyson Tam, Kevin Ray, King Demitri, Kofi O, Liane Décary-Chen, Lynn Hughes, Marie D, Martin Mathiesen Kvale, Martina Flanagan, Nathalie Pozzi, Nick Morrison, Rachel Weldon, Raphaël de Courville, Robert F, Sagan Y, Shobhit Sharma, Stephen R. Smith, and rich.gg. Thank you to everyone who contributed to the conversation on questions: Alexander King, Amanda Grant, Bertine van Hövell, Danielle Baskin, Eileen Wennekers, Eva Chérie, Jennifer Schoenberger, jkac, Mariám Zakarian, Nicola Oddy, Rachel Uwa, Steven Tu, Sulyn Cedar, Zach Gage.";
+      sendYourBeautifulSelf.value = "send";
+
     }
   }
 
-  let toggleLanguage = document.getElementById("languageP");
-  let toggleLanguageS = document.getElementById("languagePS");
+  // let toggleLanguageS = document.getElementById("languagePS");
 
-  toggleLanguage.addEventListener('click', handleLanguageUpdate)
-  toggleLanguageS.addEventListener('click', handleLanguageUpdate)
+  languageSwitchLink.addEventListener('click', handleLanguageUpdate)
+  // toggleLanguageS.addEventListener('click', handleLanguageUpdate)
 
   // toggleSoundCheckbox.addEventListener('change', handleLanguageUpdate);
 
