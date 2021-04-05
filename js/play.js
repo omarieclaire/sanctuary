@@ -716,6 +716,8 @@ function windowOnLoad() {
 
       textInput.type = "text";
       textInput.placeholder = "";
+      textInput.maxLength = "300";
+
       submitInput.type = "submit";
       submitInput.name = "sendYourBeautifulSelf"
       if(currentLanguage == 'en') {
