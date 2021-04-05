@@ -12,6 +12,70 @@ import { PointerLockControls } from './node_modules/three/examples/jsm/controls/
 
 import { SimplifyModifier } from './node_modules/three/examples/jsm/modifiers/SimplifyModifier.js';
 
+// if the language is defined, then use that
+// if the language is not defined, make it be spanish (but dont' save it)
+let currentLanguage = localStorage.getItem('lang') || 'es';
+
+// language
+let languageSwitchLink = document.getElementById("languageSwitchLink");
+let motto = document.getElementById("motto");
+let initialUsernameInput = document.getElementsByName('initialUsernameInput')[0];
+let submitUsernameValue = document.getElementsByName('submitInitialUsername')[0];
+let changeNameInput = document.getElementsByName("changeNameInput")[0]; 
+let soundLabel = document.getElementById("soundLabel");
+let credits = document.getElementById("credits");
+
+
+function renderLoadingPage(lang) {
+  if (currentLanguage == 'es') {
+    //change things to es
+    languageSwitchLink.innerHTML = "english";
+    motto.innerHTML = "Un espacio tranquilo de conexión";
+    // motto.lang = "es";
+    initialUsernameInput.placeholder = "Tu nombre o nombre de usuario";
+    // initialUsernameInput.lang = "es";
+    submitUsernameValue.value = "Comenzar";
+    // submitUsernameValue.lang = "es";
+    // languageLink.lang = "es";
+    // toggleChangeNameInput.value = `¿Quieres cambiar tu nombre, ${username}?`;
+    changeNameInput.placeholder = "Nuevo nombre";
+    soundLabel.innerHTML = "Sonido";
+    // soundLabel.lang = "es";
+    credits.innerHTML = "Desarrollado por Marie Claire LeBlanc Flanagan & friends";
+    // toggleLanguage.lang = "es";
+    // credits1.innerHTML = "Sanctuary es un espacio amable, delicado y tranquilo para la introspección y conexión ambiental desarrollado por <a target='_blank' href='https://marieflanagan.com/'>Marie Claire LeBlanc Flanagan para Proyecto Bios.</a>";
+    // credits2.innerHTML = "Gracias a: Luján Oulton, La Embajada de Canadá para Argentina y Paraguay, Aaron Levin, J por las medusas y el soporte en Blender, los creadores y colaboradores de Three.js library, y a Soundbible. Gracias especiales a todos los playtesters: AndyWaro, Bee Cavello, Craig Fahner, Ellen LeBlanc Flanagan, Erik O, Eryn Tempest, Ethan Muller, Hanna Thomas Uose, Ida Toft, Imaginary Residency, Jack, Jan van der Lugt, John W, Kevin Ray, King Demitri, Kofi O, Lu, Liane Décary-Chen, Marie D, Martina Flanagan, Nick Rachel Weldon, Raphaël de Courville, Robert F, Sagan Y, Shobhit Sharma, Stephen R. Smith, and rich.gg. Gracias también a todos quienes contribuyeron en el desarrollo de preguntas interesantes y significativas: Alexander King., Amanda Grant, Bertine van Hövell, Eva Chérie, jkac, Mariám Zakarian, Nathalie Pozzi, Nicola Oddy, Steven Tu, Sulyn Cedar, Zach Gage.";
+    document.getElementsByName('sendYourBeautifulSelf').forEach((s) => {
+      s.value = "Enviar";
+    });
+  } else {
+    languageSwitchLink.innerHTML = "español";
+    motto.innerHTML = "a soft space for gentle connection";
+    // motto.lang = "en";
+    initialUsernameInput.placeholder = "your name or username";
+    // initialUsernameInput.lang = "en";
+    submitUsernameValue.value = "begin";
+    // submitUsernameValue.lang = "en";
+    // languageLink.innerHTML = "español";
+    // languageLink.lang = "en";
+    // toggleChangeNameInput.value = `Change name, ${username}?`;
+    // toggleChangeNameInput.lang = "en";
+    changeNameInput.placeholder = "New name";
+    // changeNameInput.lang = "en";
+    soundLabel.innerHTML = "Sound";
+    // soundLabel.lang = "en";
+    credits.innerHTML = "Made by Marie Claire LeBlanc Flanagan & friends";
+    // toggleLanguage.lang = "en";
+    // credits1.innerHTML = "Sanctuary is a peaceful, gentle, soft space for slow and ambient connection with others made by <a target='_blank' href='https://marieflanagan.com/'>Marie Claire LeBlanc Flanagan for Proyecto Bios.</a>";
+    // credits2.innerHTML = "Thank you Luján Oulton, The Canadian Embassy, Imaginary Residency, Aaron Levin, J for the jellyfish and Blender support, the creators and stewards of the Three.js library, and Soundbible. Special thanks to the playtesters who generously gave feedback: AndyWaro, Bee Cavello, Craig Fahner, Daniel Brandes, Ellen LeBlanc Flanagan, Evelyne Drouin, Erik O, eryn tempest, Ethan Muller, Hanna Thomas Uose, Ida Toft, Isabella Stefanescu, Jack, Jan van der Lugt, John W, Kay Dyson Tam, Kevin Ray, King Demitri, Kofi O, Liane Décary-Chen, Lynn Hughes, Marie D, Martin Mathiesen Kvale, Martina Flanagan, Nathalie Pozzi, Nick Morrison, Rachel Weldon, Raphaël de Courville, Robert F, Sagan Y, Shobhit Sharma, Stephen R. Smith, and rich.gg. Thank you to everyone who contributed to the conversation on questions: Alexander King, Amanda Grant, Bertine van Hövell, Danielle Baskin, Eileen Wennekers, Eva Chérie, Jennifer Schoenberger, jkac, Mariám Zakarian, Nicola Oddy, Rachel Uwa, Steven Tu, Sulyn Cedar, Zach Gage.";
+    document.getElementsByName('sendYourBeautifulSelf').forEach((s) => {
+      s.value = "send";
+    });
+  }
+}
+renderLoadingPage(currentLanguage);
+
+
 let firebaseConfig = {
   apiKey: "AIzaSyDiCOSmTc5a0U0m4jY4D8s7ZXZ6ab5NTWo",
   authDomain: "sanctuary-76c32.firebaseapp.com",
@@ -83,7 +147,7 @@ let ref = database.ref();
 let msgsRef = ref.child('msg');
 
 let username = localStorage.getItem('name') || undefined;
-let currentLanguage = "es";
+
 let friendOrbs = {};
 let friendMap = {};
 let friendQuestionsS = {
@@ -174,78 +238,39 @@ let friendQuestions = {
   40: "Describe a plant that you love?"
 };
 
-// language
-let languageSwitchLink = document.getElementById("languageSwitchLink");
-let motto = document.getElementById("motto");
-let initialUsernameInput = document.getElementsByName('initialUsernameInput')[0];
-let submitUsernameValue = document.getElementsByName('submitInitialUsername')[0];
-let changeNameInput = document.getElementsByName("changeNameInput")[0]; 
-let soundLabel = document.getElementById("soundLabel");
-let credits = document.getElementById("credits");
-let sendYourBeautifulSelf = document.getElementsByName('sendYourBeautifulSelf')[0];
-
-function updateVisibility(lang, visibility) {
-  document.querySelectorAll(`[lang="${lang}"]`).forEach((element) => {
-    element.style.display = visibility;
-  });
+function updateModalLanguage(idNumber) {
+  const infoTextDiv = document.getElementById("infoTextDiv" + idNumber);
+  infoTextDiv.innerHTML = '';
+  if(currentLanguage == 'en') {
+    const newInfoText = document.createTextNode(`${friendQuestions[idNumber]}`);
+    infoTextDiv.appendChild(newInfoText);
+  } else {
+    const newInfoText = document.createTextNode(`${friendQuestionsS[idNumber]}`);
+    infoTextDiv.appendChild(newInfoText);
+  }
 }
-updateVisibility('en', 'none');
-updateVisibility('es', '');
+
+
+function updateModalLanguages() {
+  for(let i = 0; i < numberOfFriends ; i++) {
+    updateModalLanguage(i);
+  }
+}
 
 function handleLanguageUpdate(event) {
   event.preventDefault();
+  console.log(`currentLanguage = ${currentLanguage}`);
+  // update the language
   if (currentLanguage == 'en') {
-    updateVisibility('en', 'none');
-    updateVisibility('es', '');
     currentLanguage = 'es';
     localStorage.setItem('lang', 'es');
-    //change things to es
-    languageSwitchLink.innerHTML = "english";
-    motto.innerHTML = "Un espacio tranquilo de conexión";
-    // motto.lang = "es";
-    initialUsernameInput.placeholder = "Tu nombre o nombre de usuario";
-    // initialUsernameInput.lang = "es";
-    submitUsernameValue.value = "Comenzar";
-    // submitUsernameValue.lang = "es";
-    // languageLink.lang = "es";
-    // toggleChangeNameInput.value = `¿Quieres cambiar tu nombre, ${username}?`;
-    changeNameInput.placeholder = "Nuevo nombre";
-    soundLabel.innerHTML = "Sonido";
-    // soundLabel.lang = "es";
-    credits.innerHTML = "Desarrollado por Marie Claire LeBlanc Flanagan & friends";
-    // toggleLanguage.lang = "es";
-    // credits1.innerHTML = "Sanctuary es un espacio amable, delicado y tranquilo para la introspección y conexión ambiental desarrollado por <a target='_blank' href='https://marieflanagan.com/'>Marie Claire LeBlanc Flanagan para Proyecto Bios.</a>";
-    // credits2.innerHTML = "Gracias a: Luján Oulton, La Embajada de Canadá para Argentina y Paraguay, Aaron Levin, J por las medusas y el soporte en Blender, los creadores y colaboradores de Three.js library, y a Soundbible. Gracias especiales a todos los playtesters: AndyWaro, Bee Cavello, Craig Fahner, Ellen LeBlanc Flanagan, Erik O, Eryn Tempest, Ethan Muller, Hanna Thomas Uose, Ida Toft, Imaginary Residency, Jack, Jan van der Lugt, John W, Kevin Ray, King Demitri, Kofi O, Lu, Liane Décary-Chen, Marie D, Martina Flanagan, Nick Rachel Weldon, Raphaël de Courville, Robert F, Sagan Y, Shobhit Sharma, Stephen R. Smith, and rich.gg. Gracias también a todos quienes contribuyeron en el desarrollo de preguntas interesantes y significativas: Alexander King., Amanda Grant, Bertine van Hövell, Eva Chérie, jkac, Mariám Zakarian, Nathalie Pozzi, Nicola Oddy, Steven Tu, Sulyn Cedar, Zach Gage.";
-    // sendYourBeautifulSelf.value = "Enviar";
-
-
   } else {
-    updateVisibility('en', '');
-    updateVisibility('es', 'none');
     currentLanguage = 'en';
     localStorage.setItem('lang', 'en');
-    languageSwitchLink.innerHTML = "español";
-    motto.innerHTML = "a soft space for gentle connection";
-    // motto.lang = "en";
-    initialUsernameInput.placeholder = "your name or username";
-    // initialUsernameInput.lang = "en";
-    submitUsernameValue.value = "begin";
-    // submitUsernameValue.lang = "en";
-    // languageLink.innerHTML = "español";
-    // languageLink.lang = "en";
-    // toggleChangeNameInput.value = `Change name, ${username}?`;
-    // toggleChangeNameInput.lang = "en";
-    changeNameInput.placeholder = "New name";
-    // changeNameInput.lang = "en";
-    soundLabel.innerHTML = "Sound";
-    // soundLabel.lang = "en";
-    credits.innerHTML = "Made by Marie Claire LeBlanc Flanagan & friends";
-    // toggleLanguage.lang = "en";
-    // credits1.innerHTML = "Sanctuary is a peaceful, gentle, soft space for slow and ambient connection with others made by <a target='_blank' href='https://marieflanagan.com/'>Marie Claire LeBlanc Flanagan for Proyecto Bios.</a>";
-    // credits2.innerHTML = "Thank you Luján Oulton, The Canadian Embassy, Imaginary Residency, Aaron Levin, J for the jellyfish and Blender support, the creators and stewards of the Three.js library, and Soundbible. Special thanks to the playtesters who generously gave feedback: AndyWaro, Bee Cavello, Craig Fahner, Daniel Brandes, Ellen LeBlanc Flanagan, Evelyne Drouin, Erik O, eryn tempest, Ethan Muller, Hanna Thomas Uose, Ida Toft, Isabella Stefanescu, Jack, Jan van der Lugt, John W, Kay Dyson Tam, Kevin Ray, King Demitri, Kofi O, Liane Décary-Chen, Lynn Hughes, Marie D, Martin Mathiesen Kvale, Martina Flanagan, Nathalie Pozzi, Nick Morrison, Rachel Weldon, Raphaël de Courville, Robert F, Sagan Y, Shobhit Sharma, Stephen R. Smith, and rich.gg. Thank you to everyone who contributed to the conversation on questions: Alexander King, Amanda Grant, Bertine van Hövell, Danielle Baskin, Eileen Wennekers, Eva Chérie, Jennifer Schoenberger, jkac, Mariám Zakarian, Nicola Oddy, Rachel Uwa, Steven Tu, Sulyn Cedar, Zach Gage.";
-    // sendYourBeautifulSelf.value = "send";
-
   }
+
+  renderLoadingPage(currentLanguage);
+  updateModalLanguages();
 }
 
 // let toggleLanguageS = document.getElementById("languagePS");
@@ -654,11 +679,14 @@ function windowOnLoad() {
       let printFriendNumberDiv = document.createElement("div");
       let friendNumber = document.createTextNode("#" + friendID);    // Create a text node
       let infoTextDiv = document.createElement("div");
-      let infoTextDivS = document.createElement("div");
 
       let hr = document.createElement("hr");
-      let newInfoText = document.createTextNode(`${friendQuestions[id]}`);    // Create a text node
-      let newInfoTextS = document.createTextNode(`${friendQuestionsS[id]}`);    // Create a text node
+      let newInfoText;
+      if(currentLanguage == 'en') {
+        newInfoText = document.createTextNode(`${friendQuestions[id]}`);
+      } else {
+        newInfoText = document.createTextNode(`${friendQuestionsS[id]}`);
+      }
       let printTextDiv = document.createElement("div");
       let printText = document.createTextNode(" ");    // Create a text node
       let formDiv = document.createElement("div");
@@ -672,15 +700,12 @@ function windowOnLoad() {
       friendModalDiv.id = "friendModalDivID" + friendID;
       printTextDiv.id = "printTextDivID" + friendID;
       textInput.id = "textInput" + friendID;
+      infoTextDiv.id = "infoTextDiv" + friendID;
+
 
       printFriendNumberDiv.classList.add("printFriendNumberDiv");
       hr.classList.add("hr");
       infoTextDiv.classList.add("infoTextDiv");
-      infoTextDivS.classList.add("infoTextDiv");
-
-      infoTextDivS.lang = "es";
-      infoTextDiv.lang = "en";
-
 
       friendModalDiv.classList.add("friendModalDiv");
       printTextDiv.classList.add("printTextDiv");
@@ -693,14 +718,16 @@ function windowOnLoad() {
       textInput.placeholder = "";
       submitInput.type = "submit";
       submitInput.name = "sendYourBeautifulSelf"
-      submitInput.value = "✓";
+      if(currentLanguage == 'en') {
+        submitInput.value = "send";
+      } else {
+        submitInput.value = "Enviar";
+      }
 
       printFriendNumberDiv.appendChild(friendNumber);
       printTextDiv.appendChild(printText);
       infoTextDiv.appendChild(newInfoText);
       infoTextDiv.appendChild(hr);
-      infoTextDivS.appendChild(newInfoTextS);
-      infoTextDivS.appendChild(hr);
       formDiv.appendChild(form);
       form.appendChild(textInput);
       form.appendChild(submitInput);
@@ -710,7 +737,6 @@ function windowOnLoad() {
       container.insertBefore(friendModalDiv, container.childNodes[0]);
       friendModalDiv.insertBefore(printTextDiv, friendModalDiv.childNodes[0]);
       friendModalDiv.insertBefore(infoTextDiv, friendModalDiv.childNodes[0]);
-      friendModalDiv.insertBefore(infoTextDivS, friendModalDiv.childNodes[0]);
       friendModalDiv.insertBefore(printFriendNumberDiv, friendModalDiv.childNodes[0]);
       friendModalDiv.insertBefore(closeModalBtnDiv, friendModalDiv.childNodes[0]);
 
@@ -1253,9 +1279,7 @@ function windowOnLoad() {
     document.getElementsByClassName('slide-in')[0].classList.toggle('show');
     closeAllModals(event);
     // console.log("closeem");
-    let mee = localStorage.getItem('lang');
-    console.log(mee);
-    if (mee == 'en') {
+    if (currentLanguage == 'en') {
       toggleChangeNameInput.value = `Change name, ${username}?`;
     } else {
       toggleChangeNameInput.value = `¿Quieres cambiar tu nombre, ${username}?`;
@@ -1290,9 +1314,7 @@ function windowOnLoad() {
     // console.log(changeNameInput.value);
     username = nameDisplayCheck();
 
-    let mee = localStorage.getItem('lang');
-    console.log(mee);
-    if (mee == 'en') {
+    if (currentLanguage == 'en') {
       toggleChangeNameInput.value = `Change name, ${username}?`;
     } else {
       toggleChangeNameInput.value = `¿Quieres cambiar tu nombre, ${username}?`;
