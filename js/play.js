@@ -349,7 +349,9 @@ function windowOnLoad() {
   const jellyFishGLTFPromise = new Promise((resolve, reject) => {
     const gltfLoader2 = new GLTFLoader();
     gltfLoader2.load('./img/oct.glb', (gltf) => {
-      resolve(gltf.scene);
+      const jelly = gltf.scene;
+      jelly.scale.multiplyScalar(1.5);
+      resolve(jelly);
     });
   });
 
