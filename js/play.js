@@ -28,53 +28,30 @@ let credits = document.getElementById("credits");
 
 function renderLoadingPage(lang) {
   if (currentLanguage == 'es') {
-    //change things to es
     languageSwitchLink.innerHTML = "english";
     motto.innerHTML = "Un espacio tranquilo de conexión";
-    // motto.lang = "es";
     initialUsernameInput.placeholder = "Tu nombre o nombre de usuario";
-    // initialUsernameInput.lang = "es";
     submitUsernameValue.value = "Comenzar";
-    // submitUsernameValue.lang = "es";
-    // languageLink.lang = "es";
-    // toggleChangeNameInput.value = `¿Quieres cambiar tu nombre, ${username}?`;
     changeNameInput.placeholder = "Nuevo nombre";
     soundLabel.innerHTML = "Sonido";
-    // soundLabel.lang = "es";
     credits.innerHTML = "Desarrollado por Marie Claire LeBlanc Flanagan & friends";
-    // toggleLanguage.lang = "es";
-    // credits1.innerHTML = "Sanctuary es un espacio amable, delicado y tranquilo para la introspección y conexión ambiental desarrollado por <a target='_blank' href='https://marieflanagan.com/'>Marie Claire LeBlanc Flanagan para Proyecto Bios.</a>";
-    // credits2.innerHTML = "Gracias a: Luján Oulton, La Embajada de Canadá para Argentina y Paraguay, Aaron Levin, J por las medusas y el soporte en Blender, los creadores y colaboradores de Three.js library, y a Soundbible. Gracias especiales a todos los playtesters: AndyWaro, Bee Cavello, Craig Fahner, Ellen LeBlanc Flanagan, Erik O, Eryn Tempest, Ethan Muller, Hanna Thomas Uose, Ida Toft, Imaginary Residency, Jack, Jan van der Lugt, John W, Kevin Ray, King Demitri, Kofi O, Lu, Liane Décary-Chen, Marie D, Martina Flanagan, Nick Rachel Weldon, Raphaël de Courville, Robert F, Sagan Y, Shobhit Sharma, Stephen R. Smith, and rich.gg. Gracias también a todos quienes contribuyeron en el desarrollo de preguntas interesantes y significativas: Alexander King., Amanda Grant, Bertine van Hövell, Eva Chérie, jkac, Mariám Zakarian, Nathalie Pozzi, Nicola Oddy, Steven Tu, Sulyn Cedar, Zach Gage.";
     document.getElementsByName('sendYourBeautifulSelf').forEach((s) => {
       s.value = "Enviar";
     });
   } else {
     languageSwitchLink.innerHTML = "español";
     motto.innerHTML = "a soft space for gentle connection";
-    // motto.lang = "en";
     initialUsernameInput.placeholder = "your name or username";
-    // initialUsernameInput.lang = "en";
     submitUsernameValue.value = "begin";
-    // submitUsernameValue.lang = "en";
-    // languageLink.innerHTML = "español";
-    // languageLink.lang = "en";
-    // toggleChangeNameInput.value = `Change name, ${username}?`;
-    // toggleChangeNameInput.lang = "en";
     changeNameInput.placeholder = "New name";
-    // changeNameInput.lang = "en";
     soundLabel.innerHTML = "Sound";
-    // soundLabel.lang = "en";
     credits.innerHTML = "Made by Marie Claire LeBlanc Flanagan & friends";
-    // toggleLanguage.lang = "en";
-    // credits1.innerHTML = "Sanctuary is a peaceful, gentle, soft space for slow and ambient connection with others made by <a target='_blank' href='https://marieflanagan.com/'>Marie Claire LeBlanc Flanagan for Proyecto Bios.</a>";
-    // credits2.innerHTML = "Thank you Luján Oulton, The Canadian Embassy, Imaginary Residency, Aaron Levin, J for the jellyfish and Blender support, the creators and stewards of the Three.js library, and Soundbible. Special thanks to the playtesters who generously gave feedback: AndyWaro, Bee Cavello, Craig Fahner, Daniel Brandes, Ellen LeBlanc Flanagan, Evelyne Drouin, Erik O, eryn tempest, Ethan Muller, Hanna Thomas Uose, Ida Toft, Isabella Stefanescu, Jack, Jan van der Lugt, John W, Kay Dyson Tam, Kevin Ray, King Demitri, Kofi O, Liane Décary-Chen, Lynn Hughes, Marie D, Martin Mathiesen Kvale, Martina Flanagan, Nathalie Pozzi, Nick Morrison, Rachel Weldon, Raphaël de Courville, Robert F, Sagan Y, Shobhit Sharma, Stephen R. Smith, and rich.gg. Thank you to everyone who contributed to the conversation on questions: Alexander King, Amanda Grant, Bertine van Hövell, Danielle Baskin, Eileen Wennekers, Eva Chérie, Jennifer Schoenberger, jkac, Mariám Zakarian, Nicola Oddy, Rachel Uwa, Steven Tu, Sulyn Cedar, Zach Gage.";
     document.getElementsByName('sendYourBeautifulSelf').forEach((s) => {
       s.value = "send";
     });
   }
 }
 renderLoadingPage(currentLanguage);
-
 
 let firebaseConfig = {
   apiKey: "AIzaSyDiCOSmTc5a0U0m4jY4D8s7ZXZ6ab5NTWo",
@@ -134,6 +111,8 @@ const backgroundSound = new Audio("audio/background.mp3");
 const rot1Sound = new Audio("audio/rot1.mp3");
 const rot2Sound = new Audio("audio/rot2.mp3");
 const rot3Sound = new Audio("audio/rot3.mp3");
+let sounds = [friendSound, seaSound, backgroundSound, rot1Sound, rot2Sound, rot3Sound];
+
 
 let jellyfish = [];
 let jellyfishOnScreen = [];
@@ -155,7 +134,7 @@ let friendQuestionsS = {
   1: "¿Qué significa eso?",
   2: "¿Quién te inspira?",
   3: "¿Cómo aprendes?",
-  4: "¿Desarías tener más?",
+  4: "¿Desearías tener más?",
   5: "¿Puedes imaginar una mejor alternativa?",
   6: "¿Qué cosa sorprendente has aprendido?",
   7: "¿Qué hay al final?",
@@ -183,7 +162,7 @@ let friendQuestionsS = {
   29: "¿Un lugar que recuerdes con cariño?",
   30: "Cuenta una historia en 10 palabras",
   31: "¿Qué es lo que estás buscando?",
-  32: "Describe un lugar imaginario pacífico",
+  32: "Describe un lugar imaginario pacífico?",
   33: "¿Cuándo te das vuelta, qué ves?",
   34: "¿Qué hace que una pregunta sea buena?",
   35: "¿Qué sonidos escuchas en este momento?",
@@ -273,12 +252,7 @@ function handleLanguageUpdate(event) {
   updateModalLanguages();
 }
 
-// let toggleLanguageS = document.getElementById("languagePS");
-
 languageSwitchLink.addEventListener('click', handleLanguageUpdate)
-
-// toggleSoundCheckbox.addEventListener('change', handleLanguageUpdate);
-
 
 const initialFriendYPositions = [];
 for (let i = 0; i < numberOfFriends * 10; i++) {
@@ -319,8 +293,8 @@ function windowOnLoad() {
   });
 
   const boxGeometry = new THREE.TorusKnotGeometry(.8, .1, 300, 7, 5, 7);
-  // const boxGeometry = new THREE.BoxGeometry(3, 3, 3, 10, 10, 10);
 
+  
   function makeFlyingBoxes(x, y, z) {
     let boxGeometryInstance = new THREE.Mesh(boxGeometry, buildTwistMaterial(0.5));
     boxGeometryInstance.position.x = x;
@@ -345,7 +319,6 @@ function windowOnLoad() {
 
   function makeSparkles(spSource, spSpread, spLight, spSize, spQuant, numOfSets) {
     let setsOfSparks = [];
-
     sparkUniforms = {
       pointTexture: { value: new THREE.TextureLoader().load("img/spark1.png") }
     };
@@ -406,7 +379,6 @@ function windowOnLoad() {
   }
 
   function setupObject(obj, id, group, speeds, positionX, positionY, positionZ, rotationX, rotationY, rotationZ, objScale) {
-    // console.log(`setup id ${id}`);
     obj.scale.multiplyScalar(objScale);
     obj.traverse((o) => {
       if (o.isMesh) {
@@ -427,32 +399,15 @@ function windowOnLoad() {
 
     group.add(obj);
     speeds.push(Math.random());
-    // console.log('===');
   }
 
   function init() {
 
-    // function pauseSounds(){
-    //   for (let i = 0; i < songs.length; i++) {
-    //     songs[i].pause();
-    //   }
-    // }
-
-
-    // function nameDisplayCheck() {
-    //   if (localStorage.getItem('name')) {
-    //     let name = localStorage.getItem('name');
-    //     return name;
-    //     console.log("got a name");
-    //   } else {
-    //     console.log("noname");
-    //   }
-    // }
-
-    // let savedUserName = nameDisplayCheck();
-    // if (savedUserName) {
-    //   document.getElementById("username").value = savedUserName;
-    // }
+    function pauseSounds(){
+      for (let i = 0; i < sounds.length; i++) {
+        sounds[i].pause();
+      }
+    }
 
     container = document.getElementById('container');
 
@@ -1327,22 +1282,25 @@ function windowOnLoad() {
 
   // toggle sound
   let toggleSoundCheckbox = document.querySelector("input[name=toggleSoundCheckbox]");
-
   toggleSoundCheckbox.addEventListener('change', function () {
     if (this.checked) {
       console.log("Checkbox is checked..");
       backgroundSound.volume = 0.08;
       seaSound.volume = 0.08;
       friendSound.volume = 0.04;
+      backgroundSound.play();
+      backgroundSound.loop = true;
+      seaSound.play();
+      seaSound.loop = true;
       soundMuted = false;
-
-
     } else {
       console.log("Checkbox is not checked..");
       backgroundSound.volume = 0;
       seaSound.volume = 0;
       friendSound.volume = 0;
       soundMuted = true;
+      pauseSounds();
+
     }
 
     // function muteSounds() {
