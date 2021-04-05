@@ -105,7 +105,11 @@ const direction = new THREE.Vector3();
 const vertex = new THREE.Vector3();
 const color = new THREE.Color();
 
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioContext = new AudioContext();
 const friendSound = new Audio("audio/friend.mp3");
+friendSound.volume = 0.09;
 const seaSound = new Audio("audio/sea.mp3");
 const backgroundSound = new Audio("audio/background.mp3");
 const rot1Sound = new Audio("audio/rot1.mp3");
@@ -317,6 +321,18 @@ function windowOnLoad() {
   init();
   animate();
 
+  function pauseSounds(){
+    for (let i = 0; i < sounds.length; i++) {
+      sounds[i].pause();
+    }
+  }
+
+  function playSound(sound){
+    // for (let i = 0; i < sounds.length; i++) {
+    //   sounds[i].pause();
+    // }
+  }
+
   function makeSparkles(spSource, spSpread, spLight, spSize, spQuant, numOfSets) {
     let setsOfSparks = [];
     sparkUniforms = {
@@ -402,13 +418,6 @@ function windowOnLoad() {
   }
 
   function init() {
-
-    function pauseSounds(){
-      for (let i = 0; i < sounds.length; i++) {
-        sounds[i].pause();
-      }
-    }
-
     container = document.getElementById('container');
 
     renderer = new THREE.WebGLRenderer();
@@ -1175,11 +1184,12 @@ function windowOnLoad() {
     }
 
     let intersectsFriend = raycaster.intersectObjects(boxGroup.children, true);
+ 
     if (intersectsFriend.length > 0) { //you know you have an intersection
-      friendSound.volume = 0.09;
+      // friendSound.volume = 0.09;
       friendSound.play();
       document.getElementById("settingsDropdown").classList.remove("showDropdown");
-
+      document.getElementById("slidein").classList.remove("show");
       let currFriendID = intersectsFriend[0].object.friendID; //grab the id of the friend
 
       let currModalID = "friendModalDivID" + currFriendID; //form the modal ID
@@ -1287,7 +1297,7 @@ function windowOnLoad() {
       console.log("Checkbox is checked..");
       backgroundSound.volume = 0.08;
       seaSound.volume = 0.08;
-      friendSound.volume = 0.04;
+      friendSound.volume = 0.08;
       backgroundSound.play();
       backgroundSound.loop = true;
       seaSound.play();
