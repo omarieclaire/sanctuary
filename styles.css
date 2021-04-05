@@ -843,12 +843,14 @@ input {
   max-width: 60vw;
   z-index: 1;
   position: fixed;
-  flex-direction: column;
+  /* flex-direction: column;
   justify-content: left;
-  align-items: left;
+  align-items: left; */
   padding: 1rem;
   background-color:rgba(245, 182, 147, 0.75); 
   border-radius: 40px 40px;
+  transition: background-color 2s, transform 1000ms ease-out;
+
 }
 
 .dropdownContent {
@@ -895,7 +897,7 @@ input {
   padding: 5px 20px;
   background: #eee;
   /* transition: <property> <duration> <timing-function> <delay>; */
-  transition: background-color 2s, transform 2s ease-out;
+  transition: background-color 1000ms, transform 1000ms ease-out;
 }
 
 .slide-in.from-left .slide-in-content {

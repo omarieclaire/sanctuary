@@ -106,17 +106,21 @@ const vertex = new THREE.Vector3();
 const color = new THREE.Color();
 
 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioContext = new AudioContext();
 const friendSound = new Audio("audio/friend.mp3");
-friendSound.volume = 0.09;
+friendSound.volume = 0.02;
+const friendSound1 = new Audio("audio/friend1.mp3");
+friendSound1.volume = 0.02;
+const friendSound2 = new Audio("audio/friend2.mp3");
+friendSound2.volume = 0.02;
 const seaSound = new Audio("audio/sea.mp3");
 const backgroundSound = new Audio("audio/background.mp3");
 const rot1Sound = new Audio("audio/rot1.mp3");
 const rot2Sound = new Audio("audio/rot2.mp3");
 const rot3Sound = new Audio("audio/rot3.mp3");
-let sounds = [friendSound, seaSound, backgroundSound, rot1Sound, rot2Sound, rot3Sound];
-
+const emmanuelle = new Audio("audio/emmanuelle.mp3");
+let friendSounds = [friendSound, friendSound1, friendSound2];
+let ambientMusicSounds = [backgroundSound, emmanuelle, rot1Sound, rot2Sound, rot3Sound]
+let sounds = [friendSound, friendSound1, friendSound2, seaSound, backgroundSound, rot1Sound, rot2Sound, rot3Sound, emmanuelle];
 
 let jellyfish = [];
 let jellyfishOnScreen = [];
@@ -167,7 +171,7 @@ let friendQuestionsS = {
   30: "Cuenta una historia en 10 palabras",
   31: "¿Qué es lo que estás buscando?",
   32: "Describe un lugar imaginario pacífico?",
-  33: "¿Cuándo te das vuelta, qué ves?",
+  33: "¿Qué ves cuando miras hacia atrás?",
   34: "¿Qué hace que una pregunta sea buena?",
   35: "¿Qué sonidos escuchas en este momento?",
   36: "¿Qué te hace sentir conectado/a?",
@@ -258,6 +262,66 @@ function handleLanguageUpdate(event) {
 
 languageSwitchLink.addEventListener('click', handleLanguageUpdate)
 
+
+function playFriendSound() {
+  let thisFriendSound = friendSounds[Math.floor(Math.random() * friendSounds.length)];
+  thisFriendSound = thisFriendSound.cloneNode(); // so it can play twice quickly
+  thisFriendSound.volume = 0.03;
+  thisFriendSound.play();
+}
+
+function playBackgroundMusic(currSound) {
+  currSound.play();
+}
+
+function pauseAmbientMusicSounds(){
+  for (let i = 0; i < ambientMusicSounds.length; i++) {
+    ambientMusicSounds[i].pause();
+    ambientMusicSounds[i].volume = 0;
+
+  }
+}
+
+function pauseAllSounds(){
+  for (let i = 0; i < sounds.length; i++) {
+    sounds[i].pause();
+  }
+}
+
+function playSpecialSound(specialSound, length) {
+  pauseAmbientMusicSounds();
+  backgroundSound.volume = 0;
+  specialSound.volume = 0.08;
+  specialSound.play();
+  setTimeout(function(){ 
+  backgroundSound.volume = 0.09;
+  backgroundSound.play();
+  }, length);
+}
+
+// toggle sound
+let toggleSoundCheckbox = document.querySelector("input[name=toggleSoundCheckbox]");
+toggleSoundCheckbox.addEventListener('change', function () {
+  if (this.checked) {
+    console.log("Checkbox is checked..");
+    backgroundSound.volume = 0.09;
+    seaSound.volume = 0.08;
+    backgroundSound.play();
+    backgroundSound.loop = true;
+    seaSound.play();
+    seaSound.loop = true;
+    soundMuted = false;
+  } else {
+    console.log("Checkbox is not checked..");
+    backgroundSound.volume = 0;
+    seaSound.volume = 0;
+    friendSound.volume = 0;
+    soundMuted = true;
+    pauseAllSounds();
+  }
+});
+
+
 const initialFriendYPositions = [];
 for (let i = 0; i < numberOfFriends * 10; i++) {
   initialFriendYPositions.push(Math.random());
@@ -321,18 +385,6 @@ function windowOnLoad() {
   init();
   animate();
 
-  function pauseSounds(){
-    for (let i = 0; i < sounds.length; i++) {
-      sounds[i].pause();
-    }
-  }
-
-  function playSound(sound){
-    // for (let i = 0; i < sounds.length; i++) {
-    //   sounds[i].pause();
-    // }
-  }
-
   function makeSparkles(spSource, spSpread, spLight, spSize, spQuant, numOfSets) {
     let setsOfSparks = [];
     sparkUniforms = {
@@ -385,7 +437,7 @@ function windowOnLoad() {
       } else {
         let sparklesToFade = setsOfSparks.pop();
         spSource.remove(sparklesToFade);
-        setTimeout(removeSparks, 50);
+        setTimeout(removeSparks, 500);
       }
     }
 
@@ -838,7 +890,7 @@ function windowOnLoad() {
       seaSound.volume = 0.08;
       seaSound.loop = true;
       backgroundSound.play();
-      backgroundSound.volume = 0.08;
+      backgroundSound.volume = 0.09;
       backgroundSound.loop = true;
       setTimeout(function () { loadingScreenDiv.style.display = "none"; }, 600);
     },
@@ -1140,6 +1192,7 @@ function windowOnLoad() {
 
     let intersectsCenterObj = raycaster.intersectObjects([centerObj], true);
     if (intersectsCenterObj.length > 0) {
+      playSpecialSound(emmanuelle, 240000);
       // spSource, spSpread, spLight, spSize, spQuant, numofsets
       makeSparkles(centerObj, 800, .2, 9, 50, 50);
 
@@ -1147,8 +1200,7 @@ function windowOnLoad() {
 
     let intersectsRot1 = raycaster.intersectObjects([rot1], true);
     if (intersectsRot1.length > 0) {
-      rot1Sound.play();
-      rot1Sound.volume = 0.08;
+      playSpecialSound(rot1Sound, 240000);
       jellyfish.forEach((jelly) => {
         modifyMesh(jelly, (mesh) => {
           mesh.material.opacity = 0.5;
@@ -1160,7 +1212,7 @@ function windowOnLoad() {
     }
     let intersectsRot2 = raycaster.intersectObjects([rot2], true);
     if (intersectsRot2.length > 0) {
-      rot2Sound.play();
+      playSpecialSound(rot2Sound, 240000);
       rot2Sound.volume = 0.08;
       flyingBoxes.forEach((jelly) => {
         modifyMesh(jelly, (mesh) => {
@@ -1172,7 +1224,7 @@ function windowOnLoad() {
     }
     let intersectsRot3 = raycaster.intersectObjects([rot3], true);
     if (intersectsRot3.length > 0) {
-      rot3Sound.play();
+      playSpecialSound(rot3Sound, 240000);
       rot3Sound.volume = 0.08;
       flyingSpheres.forEach((jelly) => {
         modifyMesh(jelly, (mesh) => {
@@ -1186,8 +1238,9 @@ function windowOnLoad() {
     let intersectsFriend = raycaster.intersectObjects(boxGroup.children, true);
  
     if (intersectsFriend.length > 0) { //you know you have an intersection
-      // friendSound.volume = 0.09;
-      friendSound.play();
+      if (soundMuted == false) {
+        playFriendSound();
+      }
       document.getElementById("settingsDropdown").classList.remove("showDropdown");
       document.getElementById("slidein").classList.remove("show");
       let currFriendID = intersectsFriend[0].object.friendID; //grab the id of the friend
@@ -1289,40 +1342,6 @@ function windowOnLoad() {
     }
     collapse();
   }
-
-  // toggle sound
-  let toggleSoundCheckbox = document.querySelector("input[name=toggleSoundCheckbox]");
-  toggleSoundCheckbox.addEventListener('change', function () {
-    if (this.checked) {
-      console.log("Checkbox is checked..");
-      backgroundSound.volume = 0.08;
-      seaSound.volume = 0.08;
-      friendSound.volume = 0.08;
-      backgroundSound.play();
-      backgroundSound.loop = true;
-      seaSound.play();
-      seaSound.loop = true;
-      soundMuted = false;
-    } else {
-      console.log("Checkbox is not checked..");
-      backgroundSound.volume = 0;
-      seaSound.volume = 0;
-      friendSound.volume = 0;
-      soundMuted = true;
-      pauseSounds();
-
-    }
-
-    // function muteSounds() {
-    //   if (soundMuted) {
-    //     seaSound.volume = 0.1;
-    //   } else {
-    //     seaSound.volume = 0;
-    //   }
-    //   soundMuted != soundMuted;
-    // }
-    // muteSounds();
-  });
 
   document.body.onload = nameDisplayCheck;
 
