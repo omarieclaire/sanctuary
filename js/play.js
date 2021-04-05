@@ -733,6 +733,12 @@ function windowOnLoad() {
       textInput.type = "text";
       textInput.placeholder = "";
       textInput.maxLength = "300";
+      textInput.addEventListener('keydown', function(event) {
+        event.stopPropagation();
+      });
+      textInput.addEventListener('keyup', function(event) {
+        event.stopPropagation();
+      });
 
       submitInput.type = "submit";
       submitInput.name = "sendYourBeautifulSelf"
