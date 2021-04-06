@@ -492,6 +492,8 @@ width: 2rem; */
     transition-delay: 0s;
 	-webkit-transition:all .3s ease-in-out;
     transition:all .3s ease-in-out;
+    animation: fadeIn ease 3s;
+
 }
 
 .openMediModalDiv {
@@ -502,6 +504,8 @@ width: 2rem; */
     transition-delay: 0s;
 	-webkit-transition:all .3s ease-in-out;
     transition:all .3s ease-in-out;
+    animation: fadeIn ease 10s;
+
 }
 
 .friendModalDiv > p {
@@ -852,16 +856,29 @@ input {
 }
 
 @keyframes fadeIn {
-  0% {
-    opacity: 0;
+  0% {opacity:0;}
+  100% {opacity:1;}
   }
-  50% {
-    opacity: .6;
+  
+  @-moz-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
   }
-  100% {
-    opacity: 1;
+  
+  @-webkit-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
   }
-}
+  
+  @-o-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+  }
+  
+  @-ms-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+  }
 
 @keyframes fadeOut {
   0% {

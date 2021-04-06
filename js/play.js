@@ -393,7 +393,7 @@ function windowOnLoad() {
       // geometry.scene.add(mesh);
 
 
-      jelly.scale.multiplyScalar(1.5);
+      jelly.scale.multiplyScalar(1.2);
       
       resolve(jelly);
     });
@@ -1239,14 +1239,6 @@ function windowOnLoad() {
     }
   }
 
-  function closeMediModals(){
-    let medimodal = document.getElementsByClassName('mediModalDiv');
-      for (let i = 0; i < medimodal.length; i++) {
-        let currModal = medimodal[i];
-        currModal.classList.remove("openMediModalDiv");
-    }
-  }
-
 
   const fadeAmount = 1 / numberOfFriends;
 
@@ -1278,7 +1270,7 @@ function windowOnLoad() {
         }
       }
 
-      setTimeout(fadeFlyingThingsFromScene, 300, thingsOnScreen);
+      setTimeout(fadeFlyingThingsFromScene, 350, thingsOnScreen);
     }
   }
 
@@ -1336,9 +1328,11 @@ function windowOnLoad() {
         })
       })
       makeRotatingCreatures(flyingCrullers, flyingCrullersOnScreen);
-      let currModalID = "mediModalDivID1";
-      currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
-      currFriendModalDiv.classList.add("openMediModalDiv");
+      setTimeout(function(){ 
+        let currModalID = "mediModalDivID1";
+        currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
+        currFriendModalDiv.classList.add("openMediModalDiv");
+       }, 3000);
       fadeFlyingThingsFromScene(flyingCrullersOnScreen);
     }
     let intersectsRot3 = raycaster.intersectObjects([rot3], true);
@@ -1347,22 +1341,20 @@ function windowOnLoad() {
       rot3Sound.volume = 0.08;
       flyingSpheres.forEach((jelly) => {
         modifyMesh(jelly, (mesh) => {
-          mesh.material.opacity = 0.5;
-          
+          mesh.material.opacity = 0.5;    
         })
       })
       makeRotatingCreatures(flyingSpheres, flyingSpheresOnScreen);
-      let currModalID = "mediModalDivID2";
-      currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
-      currFriendModalDiv.classList.add("openMediModalDiv");
+      setTimeout(function(){ 
+        let currModalID = "mediModalDivID2";
+        currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
+        currFriendModalDiv.classList.add("openMediModalDiv");
+       }, 3000);      
       fadeFlyingThingsFromScene(flyingSpheresOnScreen);
     }
 
     let intersectsFriend = raycaster.intersectObjects(boxGroup.children, true);
  
-
-
-
     if (intersectsFriend.length > 0) { //you know you have an intersection
       if (soundMuted == false) {
         playFriendSound();
