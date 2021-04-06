@@ -140,7 +140,7 @@ let friendMap = {};
 
 let numberOfMediQuestions = 3;
 let mediQuestionsS = {
-  0: "Detente un momento, cierra tus ojos y haz 10 inhalaciones lentas y profundas.",
+  0: "Detente un momento, cierra tus ojos y haz 3 inhalaciones lentas y profundas.",
   1: "Elonga tus músculos. Estira tus manos, tus pies, tus piernas, tus brazos, tu cara, tu cuello, tu espalda, y sumérgete en ti mismo.",
   2: "¿Qué necesito ahora mismo?"
 }
