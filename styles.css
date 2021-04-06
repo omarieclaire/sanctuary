@@ -45,6 +45,7 @@ html {
 #container {
   width: 100vw;
   height: 100vh;
+  display: flex;
   /* display: block; */
   /* z-index: 100; */
 }
@@ -403,28 +404,33 @@ margin: 2rem auto 2rem auto;
   visibility: hidden;
   transition: visibility 0s lineaer 0.1s, opacity 0.3s ease;
 	/* overflow:auto; */
-	background-color:rgba(0, 0, 0, 0.65);
-  transition: all 350ms ease-in-out;
+	/* background-color:rgba(0, 0, 0, 0.65); */
   /* overflow-y: none; */
+  background:radial-gradient(circle at 59% 50%, rgba(10, 78, 134, 0.9) 5%, rgba(156, 39, 176, .8) 100%);
+  /* transition: all 350ms ease-in-out; */
+  /* background-repeat: no-repeat; */
+
 }
 .mediModalDiv {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-self: center;
   z-index: 50;
   height: 95vh;
   width: 100vw;
   border-radius: 50%;
   bottom:0;
-
+  /* font-size: 1rem; */
 	position:fixed;
   text-align: center;
   visibility: hidden;
   transition: visibility 0s lineaer 0.1s, opacity 0.3s ease;
 	/* overflow:auto; */
-	background-color:rgba(0, 0, 0, 0.65);
-  transition: all 350ms ease-in-out;
+	/* background-color:rgba(0, 0, 0, 0.65); */
+  background:radial-gradient(circle at 59% 50%, rgba(5, 112, 108, 0.9) 5%, rgba(231, 134, 49, 0.8) 100%);
+  transition: all 450ms ease-in-out;
 }
 
 .closeModalBtnDiv {
@@ -528,7 +534,7 @@ width: 2rem; */
 .infoTextDiv{
   font-size: 1.3rem;
   letter-spacing: 3px;
-  color: rgba(255, 127, 80, .8);
+  color: rgba(255, 127, 80, .9);
   font-weight: 500;
   /* background-color:rgba(0, 0, 0, 0.4); */
   /* border-radius: 20px; */
@@ -726,7 +732,7 @@ input {
   }
 
   #wrapperToggleDiv{
-    margin: 3rem 0 0 3rem;
+    margin: 3rem 0 0 3srem;
   }
 
   #settingsDropdown {
