@@ -1299,7 +1299,7 @@ function windowOnLoad() {
       // currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
       // currFriendModalDiv.classList.add("openMediModalDiv")
       // spSource, spSpread, spLight, spSize, spQuant, numofsets
-      makeSparkles(centerObj, 800, .2, 9, 50, 50);
+      makeSparkles(centerObj, 800, .2, 5, 50, 50);
     }
 
     let intersectsRot1 = raycaster.intersectObjects([rot1], true);

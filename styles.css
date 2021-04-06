@@ -927,7 +927,8 @@ input {
   padding: 1rem;
   background-color:rgba(245, 182, 147, 0.75); 
   border-radius: 40px 40px;
-  transition: background-color 2s, transform 1000ms ease-out;
+  transition: all 3s ease-out;
+  opacity: 1;
 }
 
 .dropdownContent {
@@ -960,39 +961,36 @@ input {
   z-index: 10; /* to position it in front of the other content */
   position: absolute;
   overflow: hidden; /* to prevent scrollbar appearing */
+
 }
 
 .slide-in.from-left {
   left: 0;
 }
 
-.slide-in.from-right {
-  right: 0;
-}
-
 .slide-in-content {
-  padding: 5px 20px;
+  /* padding: 5px 20px;
   background: #eee;
   /* transition: <property> <duration> <timing-function> <delay>; */
-  transition: background-color 1000ms, transform 1000ms ease-out;
+  /* transition: background-color 1000ms, transform 1000ms ease-out; */ */
 }
 
 .slide-in.from-left .slide-in-content {
-  transform: translateX(-150%);
-  -webkit-transform: translateX(-150%);
+  transform: translateY(-150%);
+  -webkit-transform: translateY(-150%);
+  transition: 0.5s;
+
 }
 
 
 .slide-in.show .slide-in-content {
-  transform: translateX(0);
-  -webkit-transform: translateX(0);
+  transform: translateY(0);
+  -webkit-transform: translateY(0);
 }
 
 /* username stuff */
 #changeNameForm {
   overflow: hidden;
-/*   width: 15rem; */
-/*   margin: .5rem; */
 }
 
 #changeNameSlider {
