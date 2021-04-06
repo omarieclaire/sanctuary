@@ -258,9 +258,27 @@ function updateModalLanguages() {
   }
 }
 
+function updateMediModalText(rotID) {
+  const mediTextID = "mediTextDiv" + rotID;
+  const mediTextDiv = document.getElementById(mediTextID);
+  let newMediText;
+  if(currentLanguage == 'en') {
+    newMediText = document.createTextNode(`${mediQuestions[rotID]}`);
+  } else {
+    newMediText = document.createTextNode(`${mediQuestionsS[rotID]}`);
+  }
+  mediTextDiv.innerHTML = '';
+  mediTextDiv.appendChild(newMediText);
+}
+
+function updateMediModalLanguages() {
+  for(let i = 0; i < numberOfMediQuestions; i++) {
+    updateMediModalText(i);
+  }
+}
+
 function handleLanguageUpdate(event) {
   event.preventDefault();
-  console.log(`currentLanguage = ${currentLanguage}`);
   // update the language
   if (currentLanguage == 'en') {
     currentLanguage = 'es';
@@ -272,6 +290,7 @@ function handleLanguageUpdate(event) {
 
   renderLoadingPage(currentLanguage);
   updateModalLanguages();
+  updateMediModalLanguages();
 }
 
 languageSwitchLink.addEventListener('click', handleLanguageUpdate)
