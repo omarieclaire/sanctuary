@@ -56,8 +56,8 @@ body {
   letter-spacing: .5rem;
   margin: 0;
   font-size: 1rem;
-  color: #ffffff;
-  height: 100vh;
+  color: #f3cfc5;
+height: 100vh;
   perspective: 1px;
   transform-style: preserve-3d;
   overflow-x: hidden;
@@ -206,6 +206,7 @@ text-decoration: none;
 
 #usernameForm input[type="text"],
 #usernameForm input[type="submit"] {
+  color: #fee3db;
   padding: 1rem;
   border: .5px solid rgba(255, 127, 80, .5);
   outline: none;
@@ -216,6 +217,7 @@ text-decoration: none;
 }
 
 .chat input[type="text"], #usernameForm input[type="text"] {
+  color: #fee3db;
   flex: 1;
   border-top-left-radius: 5rem;
   border-bottom-left-radius: 5rem;
@@ -226,6 +228,8 @@ text-decoration: none;
 }
 
 .chat input[type="submit"], #usernameForm input[type="submit"] {
+  color: #fee3db;
+
   /* flex: .5; */
   padding: 0 1rem;
   display: block;
@@ -243,7 +247,7 @@ text-decoration: none;
 }
 
 .chat input[type="submit"]:hover, #usernameForm input[type="submit"]:hover{
-  background-color:rgba(43, 0, 255, .5);
+  background-color:rgba(48, 32, 129, 0.9);
 }
 
 .chat {
@@ -510,6 +514,7 @@ width: 2rem; */
 }
 
 .printTextDiv{
+  color: #f3cfc5;
   flex-direction: column;
   max-height: 20vh;
   min-height: 40vh;
@@ -551,7 +556,7 @@ width: 2rem; */
 }
 
 .printFriendNumberDiv{
-  color: rgba(114, 206, 87, .5);
+  color: rgba(147, 143, 223, 0.9);
 font-size: 1rem;
   margin: 0rem;
 }
