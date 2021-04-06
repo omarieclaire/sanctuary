@@ -159,7 +159,7 @@ text-decoration: none;
   text-align: center;
   position: fixed;
   display: flex;
-  margin: 1rem;
+  margin: 2px;
   /* z-index: 500; */
 }
 
@@ -726,7 +726,7 @@ input {
   }
 
   #wrapperToggleDiv{
-    margin: 4rem 0 0 4rem;
+    margin: 3rem 0 0 3rem;
   }
 
   #settingsDropdown {
