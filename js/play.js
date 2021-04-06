@@ -354,6 +354,15 @@ toggleSoundCheckbox.addEventListener('change', function () {
   }
 });
 
+function fadeMeOut(me, classToRemove){
+  me.classList.add("fadeMeOut");
+  setTimeout(function(){ 
+    me.classList.remove(classToRemove);
+   }, 1200);
+   setTimeout(function(){ 
+    me.classList.remove("fadeMeOut");
+   }, 1600);
+}
 
 const initialFriendYPositions = [];
 for (let i = 0; i < numberOfFriends * 10; i++) {
@@ -693,8 +702,6 @@ function windowOnLoad() {
     rot1 = makeRotatorObjInstance(torusKnotGeometry, 6823151, ax, 0, ay);
     rot2 = makeRotatorObjInstance(torusKnotGeometry, 1514735, bx, 0, by);
     rot3 = makeRotatorObjInstance(torusKnotGeometry, 1543450, cx, 0, cy);
-
-
     // const centerObjs = [
     //   makeCenterObjInstance(torusKnotGeometry, 0x8844aa, ax, 0, ay),
     //   makeCenterObjInstance(torusKnotGeometry, 0xaa8844, bx, 0, by),
@@ -783,12 +790,11 @@ function windowOnLoad() {
       closeModalBtnDiv.appendChild(closeModalBtn);
 
       container.insertBefore(mediModalDiv, container.childNodes[0]);
-      // mediModalDiv.insertBefore(printTextDiv, mediModalDiv.childNodes[0]);
       mediModalDiv.insertBefore(mediTextDiv, mediModalDiv.childNodes[0]);
       mediModalDiv.insertBefore(closeModalBtnDiv, mediModalDiv.childNodes[0]);
 
       closeModalBtn.addEventListener("click", function (event) {
-      mediModalDiv.classList.remove("openMediModalDiv");
+        fadeMeOut(mediModalDiv, "openMediModalDiv");
       })
     }
 
@@ -886,7 +892,7 @@ function windowOnLoad() {
       });
 
       closeModalBtn.addEventListener("click", function (event) {
-        friendModalDiv.classList.remove("openFriendModalDiv");
+        fadeMeOut(friendModalDiv, "openFriendModalDiv");
       })
 
     }
@@ -1241,18 +1247,18 @@ function windowOnLoad() {
   // close modals when clicking outside them - this works but not as expected
   function closeAllModals(event) {
     let modal = document.getElementsByClassName('friendModalDiv');
-    if (event.target.classList.contains('friendModalDiv')) {
+    let medimodal = document.getElementsByClassName('mediModalDiv');
+    if (event.target.classList.contains('friendModalDiv') || event.target.classList.contains('mediModalDiv')) {
+      // do nothing
     } else {
       for (let i = 0; i < modal.length; i++) {
         let currModal = modal[i];
+        // fadeMeOut(currModal, "openFriendModalDiv");
         currModal.classList.remove("openFriendModalDiv");
       }
-    }
-    let medimodal = document.getElementsByClassName('mediModalDiv');
-    if (event.target.classList.contains('mediModalDiv')) {
-    } else {
       for (let i = 0; i < medimodal.length; i++) {
         let currModal = medimodal[i];
+        // fadeMeOut(currModal, "openMediModalDiv");
         currModal.classList.remove("openMediModalDiv");
       }
     }
@@ -1392,6 +1398,7 @@ function windowOnLoad() {
 
       for (let i = 0; i < intersectsFriend.length; i++) {
         let currObj = intersectsFriend[i].object;
+        console.log('intersection!');
         modifyMesh(currObj, (o) => {
           o.material.emissive.setHex(3135135);
           o.material.opacity = 0.2;
