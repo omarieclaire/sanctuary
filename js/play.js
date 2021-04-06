@@ -30,7 +30,7 @@ function renderLoadingPage(lang) {
   if (currentLanguage == 'es') {
     languageSwitchLink.innerHTML = "english";
     motto.innerHTML = "Un espacio tranquilo de conexión";
-    initialUsernameInput.placeholder = "Tu nombre o nombre de usuario";
+    initialUsernameInput.placeholder = "Tu nombre";
     submitUsernameValue.value = "Comenzar";
     changeNameInput.placeholder = "Nuevo nombre";
     soundLabel.innerHTML = "Sonido";
@@ -1420,7 +1420,7 @@ function windowOnLoad() {
     if (currentLanguage == 'en') {
       toggleChangeNameInput.value = `Change name, ${username}?`;
     } else {
-      toggleChangeNameInput.value = `¿Quieres cambiar tu nombre, ${username}?`;
+      toggleChangeNameInput.value = `¿Cambiar tu nombre, ${username}?`;
     }
   }
 
@@ -1455,7 +1455,7 @@ function windowOnLoad() {
     if (currentLanguage == 'en') {
       toggleChangeNameInput.value = `Change name, ${username}?`;
     } else {
-      toggleChangeNameInput.value = `¿Quieres cambiar tu nombre, ${username}?`;
+      toggleChangeNameInput.value = `¿Cambiar tu nombre, ${username}?`;
 
     }
     collapse();
