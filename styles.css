@@ -405,6 +405,25 @@ margin: 2rem auto 2rem auto;
 	background-color:rgba(0, 0, 0, 0.65);
   transition: all 350ms ease-in-out;
 }
+.mediModalDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  height: 95vh;
+  width: 100vw;
+  border-radius: 50%;
+  bottom:0;
+
+	position:fixed;
+  text-align: center;
+  visibility: hidden;
+  transition: visibility 0s lineaer 0.1s, opacity 0.3s ease;
+	/* overflow:auto; */
+	background-color:rgba(0, 0, 0, 0.65);
+  transition: all 350ms ease-in-out;
+}
 
 .closeModalBtnDiv {
   /* background-color: rgb(44, 191, 235);
@@ -445,8 +464,6 @@ width: 2rem; */
   transform: rotate(-45deg);
 }
 
-
-
 .innerFriendWrapper {
   width: 100vw;
     height: 80vh;
@@ -455,6 +472,16 @@ width: 2rem; */
 }
 
 .openFriendModalDiv {
+  display:flex;
+	position:absolute;
+  visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+	-webkit-transition:all .3s ease-in-out;
+    transition:all .3s ease-in-out;
+}
+
+.openMediModalDiv {
   display:flex;
 	position:absolute;
   visibility: visible;

@@ -77,7 +77,7 @@ let newText;
 let INTERSECTED;
 let theta = 0;
 let currFriendModalDiv = undefined;
-let modalOpen = false;
+// let modalOpen = false;
 const mouse = new THREE.Vector2();
 let boxGroup;
 let boxSpeeds = [];
@@ -124,8 +124,8 @@ let sounds = [friendSound, friendSound1, friendSound2, seaSound, backgroundSound
 
 let jellyfish = [];
 let jellyfishOnScreen = [];
-let flyingBoxes = [];
-let flyingBoxesOnScreen = [];
+let flyingCrullers = [];
+let flyingCrullersOnScreen = [];
 let flyingSpheres = [];
 let flyingSpheresOnScreen = [];
 
@@ -137,6 +137,20 @@ let username = localStorage.getItem('name') || undefined;
 
 let friendOrbs = {};
 let friendMap = {};
+
+let numberOfMediQuestions = 3;
+let mediQuestionsS = {
+  0: "Detente un momento, cierra tus ojos y haz 10 inhalaciones lentas y profundas.",
+  1: "Elonga tus músculos. Estira tus manos, tus pies, tus piernas, tus brazos, tu cara, tu cuello, tu espalda, y sumérgete en ti mismo.",
+  2: "¿Qué necesito ahora mismo?"
+}
+
+let mediQuestions = {
+  0: "Close your eyes and take 3 slow deep breaths.",
+  1: "Stretch your muscles. Stretch your hands, your feet, your legs, your arms, your face, your neck, your back, and sink into your own softness.",
+  2: "What do you need right now? Can you give it to yourself, even in the smallest way?"
+}
+
 let friendQuestionsS = {
   0: "¿Cuál sería un placer sencillo para ti?",
   1: "¿Qué significa eso?",
@@ -349,8 +363,38 @@ function windowOnLoad() {
   const jellyFishGLTFPromise = new Promise((resolve, reject) => {
     const gltfLoader2 = new GLTFLoader();
     gltfLoader2.load('./img/oct.glb', (gltf) => {
+
+      // console.log('load');
       const jelly = gltf.scene;
+      // console.log(jelly);
+
+      // console.log('===== before =====');
+      jelly.traverse((o) => {
+        if(o.isMesh) {
+          // console.log(o.material); failed log 
+          o.material = buildTwistMaterial(0.02);
+          o.material.needsUpdate = true;
+          o.updateMatrix();
+          // console.log('updated');
+          // console.log(o.material);
+        }
+      });
+
+      // console.log('====== after =====');
+      jelly.traverse((o) => {
+        if(o.isMesh) {
+          // console.log(o.material);
+        }
+      });
+
+
+      // let mesh = new THREE.Mesh(geometry, buildTwistMaterial(2.0));
+      // scene.add(mesh);
+      // geometry.scene.add(mesh);
+
+
       jelly.scale.multiplyScalar(1.5);
+      
       resolve(jelly);
     });
   });
@@ -362,26 +406,24 @@ function windowOnLoad() {
     });
   });
 
-  const boxGeometry = new THREE.TorusKnotGeometry(.8, .1, 300, 7, 5, 7);
-
-  
-  function makeFlyingBoxes(x, y, z) {
-    let boxGeometryInstance = new THREE.Mesh(boxGeometry, buildTwistMaterial(0.5));
-    boxGeometryInstance.position.x = x;
-    boxGeometryInstance.position.y = y;
-    boxGeometryInstance.position.z = z;
+  const crullerGeometry = new THREE.TorusKnotGeometry(.8, .1, 300, 7, 5, 7);
+  function makeFlyingCrullers(x, y, z) {
+    let cruller = new THREE.Mesh(crullerGeometry, buildTwistMaterial(0.5));
+    cruller.position.x = x;
+    cruller.position.y = y;
+    cruller.position.z = z;
     // centerWorldContainer.add(boxGeometryInstance); //rotate
-    return boxGeometryInstance;
+    return cruller;
   }
 
-  const nsphereGeometry = new THREE.TorusGeometry(18, .8, 21, 100, 6.3);
-  function makeFlyingSpheres(x, y, z) {
-    let sphereGeometryInstance = new THREE.Mesh(nsphereGeometry, buildTwistMaterial(0.2));
-    sphereGeometryInstance.position.x = x;
-    sphereGeometryInstance.position.y = y;
-    sphereGeometryInstance.position.z = z;
+  const giantLoopGeometry = new THREE.TorusGeometry(18, .8, 21, 100, 6.3);
+  function makeGiantLoops(x, y, z) {
+    let giantLoop = new THREE.Mesh(giantLoopGeometry, buildTwistMaterial(0.2));
+    giantLoop.position.x = x;
+    giantLoop.position.y = y;
+    giantLoop.position.z = z;
     // centerWorldContainer.add(boxGeometryInstance); //rotate
-    return sphereGeometryInstance;
+    return giantLoop;
   }
 
   init();
@@ -686,9 +728,50 @@ function windowOnLoad() {
     controls.dampingFactor = 0.05;
     controls.keyPanSpeed = 50;
     controls.update();
+    // controls.keys = {
+    //   LEFT: 'ArrowLeft', //left arrow
+    //   UP: 'ArrowUp', // up arrow
+    //   RIGHT: 'ArrowRight', // right arrow
+    //   BOTTOM: 'ArrowDown' // down arrow
+    // }
     // https://threejs.org/docs/#examples/en/controls/OrbitControls.keys
 
     // const geometry = new THREE.TorusKnotGeometry(10, 6, 100, 14, 4, 2);
+    function makeMediModal(rotID, id) {
+      // medQuestionsS
+      let container = document.getElementById("container");
+      let mediModalDiv = document.createElement("div");
+      let mediTextDiv = document.createElement("div");
+
+      let newMediText;
+      if(currentLanguage == 'en') {
+        newMediText = document.createTextNode(`${mediQuestions[id]}`);
+      } else {
+        newMediText = document.createTextNode(`${mediQuestionsS[id]}`);
+      }
+      let closeModalBtnDiv = document.createElement("div");
+      let closeModalBtn = document.createElement("div");
+
+      mediModalDiv.id = "mediModalDivID" + rotID;
+      mediTextDiv.id = "mediTextDiv" + rotID;
+
+      mediTextDiv.classList.add("infoTextDiv");
+      mediModalDiv.classList.add("mediModalDiv");
+      closeModalBtnDiv.classList.add("closeModalBtnDiv");
+      closeModalBtn.classList.add("closeModalBtn");
+
+      mediTextDiv.appendChild(newMediText);
+      closeModalBtnDiv.appendChild(closeModalBtn);
+
+      container.insertBefore(mediModalDiv, container.childNodes[0]);
+      // mediModalDiv.insertBefore(printTextDiv, mediModalDiv.childNodes[0]);
+      mediModalDiv.insertBefore(mediTextDiv, mediModalDiv.childNodes[0]);
+      mediModalDiv.insertBefore(closeModalBtnDiv, mediModalDiv.childNodes[0]);
+
+      closeModalBtn.addEventListener("click", function (event) {
+      mediModalDiv.classList.remove("openMediModalDiv");
+      })
+    }
 
     function makeFriendModal(friendID, id) {
       let container = document.getElementById("container");
@@ -711,8 +794,8 @@ function windowOnLoad() {
       let form = document.createElement("form");
       let textInput = document.createElement("input");
       let submitInput = document.createElement("input");
-      let closeModalBtnDiv = document.createElement("div")
-      let closeModalBtn = document.createElement("div")
+      let closeModalBtnDiv = document.createElement("div");
+      let closeModalBtn = document.createElement("div");
 
 
       friendModalDiv.id = "friendModalDivID" + friendID;
@@ -789,6 +872,10 @@ function windowOnLoad() {
 
     }
 
+    for (let i = 0; i < numberOfMediQuestions; i++) {
+      makeMediModal(i, i);
+    }
+
     // makefriendorbs
     for (let i = 0; i < numberOfFriends; i++) {
 
@@ -820,8 +907,8 @@ function windowOnLoad() {
         jellyfish[i] = jelly.clone();
       });
 
-      flyingBoxes[i] = makeFlyingBoxes(positionX, positionY, positionZ);
-      flyingSpheres[i] = makeFlyingSpheres(positionX, positionY, positionZ);
+      flyingCrullers[i] = makeFlyingCrullers(positionX, positionY, positionZ);
+      flyingSpheres[i] = makeGiantLoops(positionX, positionY, positionZ);
 
       friendOrbs[i] = sphereAtHeartOfFriend;
 
@@ -980,7 +1067,7 @@ function windowOnLoad() {
         modifyMesh(friend, (o) => {
           o.material.opacity = 0.5;
           // let noOfPosts = msgsRef.child(); https://stackoverflow.com/questions/53815822/most-efficient-way-to-count-children-with-firebase-database
-          // o.scale.multiplyScalar(2); findme 
+          // o.scale.multiplyScalar(2);  
         });
       }
 
@@ -1142,6 +1229,14 @@ function windowOnLoad() {
         currModal.classList.remove("openFriendModalDiv");
       }
     }
+    let medimodal = document.getElementsByClassName('mediModalDiv');
+    if (event.target.classList.contains('mediModalDiv')) {
+    } else {
+      for (let i = 0; i < modal.length; i++) {
+        let currModal = modal[i];
+        currModal.classList.remove("openMediModalDiv");
+      }
+    }
   }
 
   const fadeAmount = 1 / numberOfFriends;
@@ -1201,9 +1296,11 @@ function windowOnLoad() {
     let intersectsCenterObj = raycaster.intersectObjects([centerObj], true);
     if (intersectsCenterObj.length > 0) {
       playSpecialSound(emmanuelle, 240000);
+      // let currModalID = "friendModalDivID0"; 
+      // currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
+      // currFriendModalDiv.classList.add("openMediModalDiv")
       // spSource, spSpread, spLight, spSize, spQuant, numofsets
       makeSparkles(centerObj, 800, .2, 9, 50, 50);
-
     }
 
     let intersectsRot1 = raycaster.intersectObjects([rot1], true);
@@ -1215,20 +1312,27 @@ function windowOnLoad() {
         })
       })
       makeRotatingCreatures(jellyfish, jellyfishOnScreen);
+      let currModalID = "mediModalDivID0";
+      currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
+      currFriendModalDiv.classList.add("openMediModalDiv");
       fadeFlyingThingsFromScene(jellyfishOnScreen);
       // skyBright = 0;
     }
+
     let intersectsRot2 = raycaster.intersectObjects([rot2], true);
     if (intersectsRot2.length > 0) {
       playSpecialSound(rot2Sound, 240000);
       rot2Sound.volume = 0.08;
-      flyingBoxes.forEach((jelly) => {
+      flyingCrullers.forEach((jelly) => {
         modifyMesh(jelly, (mesh) => {
           mesh.material.opacity = 0.5;
         })
       })
-      makeRotatingCreatures(flyingBoxes, flyingBoxesOnScreen);
-      fadeFlyingThingsFromScene(flyingBoxesOnScreen);
+      makeRotatingCreatures(flyingCrullers, flyingCrullersOnScreen);
+      let currModalID = "mediModalDivID1";
+      currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
+      currFriendModalDiv.classList.add("openMediModalDiv");
+      fadeFlyingThingsFromScene(flyingCrullersOnScreen);
     }
     let intersectsRot3 = raycaster.intersectObjects([rot3], true);
     if (intersectsRot3.length > 0) {
@@ -1237,14 +1341,21 @@ function windowOnLoad() {
       flyingSpheres.forEach((jelly) => {
         modifyMesh(jelly, (mesh) => {
           mesh.material.opacity = 0.5;
+          
         })
       })
       makeRotatingCreatures(flyingSpheres, flyingSpheresOnScreen);
+      let currModalID = "mediModalDivID2";
+      currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
+      currFriendModalDiv.classList.add("openMediModalDiv");
       fadeFlyingThingsFromScene(flyingSpheresOnScreen);
     }
 
     let intersectsFriend = raycaster.intersectObjects(boxGroup.children, true);
  
+
+
+
     if (intersectsFriend.length > 0) { //you know you have an intersection
       if (soundMuted == false) {
         playFriendSound();
@@ -1255,8 +1366,8 @@ function windowOnLoad() {
 
       let currModalID = "friendModalDivID" + currFriendID; //form the modal ID
       currFriendModalDiv = document.getElementById(currModalID); //grad the current Modal
-      currFriendModalDiv.classList.add("openFriendModalDiv")
-      modalOpen = true;
+      currFriendModalDiv.classList.add("openFriendModalDiv");
+      // modalOpen = true;
 
       // let msg = takeModalIDReturnMsg(currFriendID);
       // let currTextDiv = document.getElementById("textInputID" + currFriendID);
@@ -1272,7 +1383,6 @@ function windowOnLoad() {
       }
       let currentOrb = friendOrbs[currFriendID];
       currentOrb.remove(sparkleFriendMap[currentOrb.friendID]);
-
     }
   }
 
