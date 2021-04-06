@@ -468,7 +468,7 @@ width: 2rem; */
   content: ' ';
   height: 2.5rem;
   width: 3px;
-  background-color: rgb(77, 20, 238)
+  background-color: rgb(77, 20, 238);
 }
 .closeModalBtn:before {
   transform: rotate(45deg);

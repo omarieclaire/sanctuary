@@ -1232,12 +1232,21 @@ function windowOnLoad() {
     let medimodal = document.getElementsByClassName('mediModalDiv');
     if (event.target.classList.contains('mediModalDiv')) {
     } else {
-      for (let i = 0; i < modal.length; i++) {
-        let currModal = modal[i];
+      for (let i = 0; i < medimodal.length; i++) {
+        let currModal = medimodal[i];
         currModal.classList.remove("openMediModalDiv");
       }
     }
   }
+
+  function closeMediModals(){
+    let medimodal = document.getElementsByClassName('mediModalDiv');
+      for (let i = 0; i < medimodal.length; i++) {
+        let currModal = medimodal[i];
+        currModal.classList.remove("openMediModalDiv");
+    }
+  }
+
 
   const fadeAmount = 1 / numberOfFriends;
 
@@ -1290,9 +1299,7 @@ function windowOnLoad() {
 
   function clickOrTouchFriendOrbs(event) {
     raycaster.setFromCamera(mouse, camera);
-
     closeAllModals(event);
-
     let intersectsCenterObj = raycaster.intersectObjects([centerObj], true);
     if (intersectsCenterObj.length > 0) {
       playSpecialSound(emmanuelle, 240000);
