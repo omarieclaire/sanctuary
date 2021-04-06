@@ -1392,11 +1392,10 @@ function windowOnLoad() {
 
       for (let i = 0; i < intersectsFriend.length; i++) {
         let currObj = intersectsFriend[i].object;
-        currObj.parent.children.forEach((obj) => {
-          modifyMesh(obj, (o) => {
-            o.material.emissive.setHex(3135135);
-            o.material.opacity = 0.2;
-          })
+        console.log('intersection!');
+        modifyMesh(currObj, (o) => {
+          o.material.emissive.setHex(3135135);
+          o.material.opacity = 0.2;
         });
       }
       let currentOrb = friendOrbs[currFriendID];
